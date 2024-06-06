@@ -1,7 +1,7 @@
 package librarysystem;
 
-import business.ControllerInterface;
-import business.SystemController;
+import controller.ControllerInterface;
+import controller.SystemController;
 import librarysystem.windows.*;
 import utils.Util;
 
@@ -76,23 +76,23 @@ public class LibrarySystem extends JFrame implements LibWindow {
     }
 
     private void addMenuItems() {
-       options = new JMenu("Options");  
- 	   menuBar.add(options);
- 	   login = new JMenuItem("Login");
- 	   login.addActionListener(new LoginListener());
- 	   allBookIds = new JMenuItem("All Book Ids");
- 	   allBookIds.addActionListener(new AllBookIdsListener());
- 	   allMemberIds = new JMenuItem("All Member Ids");
- 	   allMemberIds.addActionListener(new AllMemberIdsListener());
-	   checkoutForm = new JMenuItem("Checkout Form");
-       checkoutForm.addActionListener(new CheckoutFormListener());
+        options = new JMenu("Options");
+        menuBar.add(options);
+        login = new JMenuItem("Login");
+        login.addActionListener(new LoginListener());
+        allBookIds = new JMenuItem("All Book Ids");
+        allBookIds.addActionListener(new AllBookIdsListener());
+        allMemberIds = new JMenuItem("All Member Ids");
+        allMemberIds.addActionListener(new AllMemberIdsListener());
+        checkoutForm = new JMenuItem("Checkout Form");
+        checkoutForm.addActionListener(new CheckoutFormListener());
         addNewMember = new JMenuItem("Add Library Member");
         addNewMember.addActionListener(new AddNewLibraryMember());
-       options.add(login);
- 	   options.add(allBookIds);
- 	   options.add(allMemberIds);
-	   options.add(checkoutForm);
-       options.add(addNewMember);
+        options.add(login);
+        options.add(allBookIds);
+        options.add(allMemberIds);
+        options.add(checkoutForm);
+        options.add(addNewMember);
     }
 
     class LoginListener implements ActionListener {
@@ -128,32 +128,32 @@ public class LibrarySystem extends JFrame implements LibWindow {
 
     class AllMemberIdsListener implements ActionListener {
 
-    	@Override
-		public void actionPerformed(ActionEvent e) {
-			LibrarySystem.hideAllWindows();
-			AllMemberIdsWindow.INSTANCE.init();
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            LibrarySystem.hideAllWindows();
+            AllMemberIdsWindow.INSTANCE.init();
 //			AllMemberIdsWindow.INSTANCE.pack();
-			AllMemberIdsWindow.INSTANCE.setVisible(true);
+            AllMemberIdsWindow.INSTANCE.setVisible(true);
 
 
-			LibrarySystem.hideAllWindows();
-			AllBookIdsWindow.INSTANCE.init();
+            LibrarySystem.hideAllWindows();
+            AllBookIdsWindow.INSTANCE.init();
 
-			List<String> ids = ci.allMemberIds();
-			Collections.sort(ids);
-			StringBuilder sb = new StringBuilder();
-			for(String s: ids) {
-				sb.append(s + "\n");
-			}
-			System.out.println(sb.toString());
+            List<String> ids = ci.allMemberIds();
+            Collections.sort(ids);
+            StringBuilder sb = new StringBuilder();
+            for (String s : ids) {
+                sb.append(s + "\n");
+            }
+            System.out.println(sb.toString());
 //			AllMemberIdsWindow.INSTANCE.setData(sb.toString());
 //			AllMemberIdsWindow.INSTANCE.pack();
-			//AllMemberIdsWindow.INSTANCE.setSize(660,500);
-			Util.centerFrameOnDesktop(AllMemberIdsWindow.INSTANCE);
-			AllMemberIdsWindow.INSTANCE.setVisible(true);
+            //AllMemberIdsWindow.INSTANCE.setSize(660,500);
+            Util.centerFrameOnDesktop(AllMemberIdsWindow.INSTANCE);
+            AllMemberIdsWindow.INSTANCE.setVisible(true);
 
 
-		}
+        }
 
     }
 
@@ -167,26 +167,26 @@ public class LibrarySystem extends JFrame implements LibWindow {
         }
     }
 
-	class CheckoutFormListener implements ActionListener {
-		@Override
-		public void actionPerformed(ActionEvent e){
-			LibrarySystem.hideAllWindows();
-			CheckoutFormWindow.INSTANCE.init();
-			Util.centerFrameOnDesktop(CheckoutFormWindow.INSTANCE);
-			CheckoutFormWindow.INSTANCE.setVisible(true);
-		}
-	}
+    class CheckoutFormListener implements ActionListener {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            LibrarySystem.hideAllWindows();
+            CheckoutFormWindow.INSTANCE.init();
+            Util.centerFrameOnDesktop(CheckoutFormWindow.INSTANCE);
+            CheckoutFormWindow.INSTANCE.setVisible(true);
+        }
+    }
 
-	@Override
-	public boolean isInitialized() {
-		return isInitialized;
-	}
+    @Override
+    public boolean isInitialized() {
+        return isInitialized;
+    }
 
 
-	@Override
-	public void isInitialized(boolean val) {
-		isInitialized =val;
-		
-	}
-    
+    @Override
+    public void isInitialized(boolean val) {
+        isInitialized = val;
+
+    }
+
 }

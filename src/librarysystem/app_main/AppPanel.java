@@ -1,13 +1,9 @@
 package librarysystem.app_main;
 
-import business.SystemController;
+import controller.SystemController;
 import dataaccess.Auth;
 import librarysystem.MainLibrarySystem;
-import librarysystem.windows.AddBookCopyWindow;
-import librarysystem.windows.AddMemberWindow;
-import librarysystem.windows.AllMemberIdsWindow;
-import librarysystem.windows.CheckoutFormWindow;
-import librarysystem.windows.DashboardWindow;
+import librarysystem.windows.*;
 
 import javax.swing.*;
 import java.awt.*;

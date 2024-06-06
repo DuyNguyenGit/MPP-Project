@@ -1,7 +1,7 @@
 package librarysystem.windows;
 
-import business.ControllerInterface;
-import business.SystemController;
+import controller.ControllerInterface;
+import controller.SystemController;
 import librarysystem.LibWindow;
 import librarysystem.LibrarySystem;
 import utils.Util;

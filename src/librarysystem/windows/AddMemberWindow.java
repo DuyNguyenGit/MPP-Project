@@ -1,6 +1,6 @@
 package librarysystem.windows;
 
-import business.SystemController;
+import controller.SystemController;
 import exception.LibrarySystemException;
 import librarysystem.LibWindow;
 import utils.Util;

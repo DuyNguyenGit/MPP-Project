@@ -20,10 +20,11 @@ public class AddBookCopyWindow extends JPanel implements LibWindow {
     private boolean isInitialized = false;
 
     private JPanel mainPanel;
-    private JPanel middlePanel;
     private TextField isbnTxtField;
     private JButton addBookCopyBtn;
     private JTable bookCopyTable;
+
+    private String[] columnNames = {"No", "ISBN", "Title", "Copy Num", "Available"};
 
     //Singleton class
     private AddBookCopyWindow() {
@@ -44,32 +45,35 @@ public class AddBookCopyWindow extends JPanel implements LibWindow {
     public void init() {
         mainPanel = new JPanel();
         mainPanel.setLayout(null);
-        defineMiddlePanel();
-        mainPanel.add(middlePanel, BorderLayout.CENTER);
+        defineMainPanel();
         add(mainPanel);
         isInitialized(true);
         setSize(621, 450);
     }
 
-    public void defineMiddlePanel() {
-        middlePanel = new JPanel();
+    public void defineMainPanel() {
+        mainPanel = new JPanel();
         FlowLayout fl = new FlowLayout(FlowLayout.CENTER, 25, 25);
-        middlePanel.setLayout(fl);
+        mainPanel.setLayout(fl);
         isbnTxtField = new TextField("", 20);
-        middlePanel.add(isbnTxtField);
+        mainPanel.add(isbnTxtField);
 
         addBookCopyBtn = new JButton("Add Book Copy");
         addBookCopyButtonListener(addBookCopyBtn);
-        middlePanel.add(addBookCopyBtn);
-
+        mainPanel.add(addBookCopyBtn);
         defineBookCopyTable();
     }
 
     private void defineBookCopyTable() {
-        String[] columnNames = {"ISBN", "Title", "Copy Num", "Available"};
         DefaultTableModel defaultTableModel = new DefaultTableModel(columnNames, 0);
         bookCopyTable = new JTable(defaultTableModel);
-        middlePanel.add(bookCopyTable);
+        bookCopyTable.getColumnModel().getColumn(0).setPreferredWidth(20);
+        bookCopyTable.setEnabled(false);
+        bookCopyTable.setBounds(30, 40, 200, 200);
+
+        JScrollPane sp = new JScrollPane(bookCopyTable);
+        sp.setPreferredSize(new Dimension(480, 300));
+        mainPanel.add(sp);
     }
 
     private void addBookCopyButtonListener(JButton butn) {
@@ -79,11 +83,14 @@ public class AddBookCopyWindow extends JPanel implements LibWindow {
                 DefaultTableModel defaultTableModel = (DefaultTableModel) bookCopyTable.getModel();
                 defaultTableModel.getDataVector().removeAllElements();
 
-                for (int i = 0; i < book.getCopies().length; i++) {
+                int no = 0;
+                for (int i = book.getCopies().length - 1; i >= 0; i--) {
+                    no++;
                     BookCopy bookCopy = book.getCopies()[i];
-                    Object[] rowData = new Object[]{book.getIsbn(), book.getTitle(), bookCopy.getCopyNum(), bookCopy.isAvailable()};
+                    Object[] rowData = new Object[]{no, book.getIsbn(), book.getTitle(), bookCopy.getCopyNum(), bookCopy.isAvailable()};
                     defaultTableModel.addRow(rowData);
                 }
+
                 bookCopyTable.setModel(defaultTableModel);
                 bookCopyTable.updateUI();
             } catch (LibrarySystemException e) {

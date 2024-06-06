@@ -12,14 +12,15 @@ public class CheckoutRecord implements Serializable {
     private List<CheckoutRecordEntry> checkoutRecordEntryList = new ArrayList<>();
     private List<Fine> fineList = new ArrayList<>();
 
-    CheckoutRecord(LibraryMember libraryMember, CheckoutRecordEntry RecordEntry){
+    public CheckoutRecord(LibraryMember libraryMember, CheckoutRecordEntry RecordEntry) {
         this.libraryMember = libraryMember;
         this.checkoutRecordEntryList.add(RecordEntry);
     }
 
-    public void addEntry(CheckoutRecordEntry checkoutRecordEntry){
+    public void addEntry(CheckoutRecordEntry checkoutRecordEntry) {
         checkoutRecordEntryList.add(checkoutRecordEntry);
     }
+
     public LibraryMember getLibraryMember() {
         return libraryMember;
     }

@@ -1,9 +1,5 @@
 package utils;
 
-import dataaccess.DataAccess;
-import dataaccess.DataAccessFacade;
-import dataaccess.User;
-
 import javax.swing.*;
 import java.awt.*;
 import java.util.Collections;
@@ -80,13 +76,4 @@ public class Util {
         return s == null || s.isEmpty();
     }
 
-    public static void setCurrentUser(User user) {
-        DataAccess dataAccess = new DataAccessFacade();
-        dataAccess.saveCurrentUser(user);
-    }
-
-    public static User getCurrentUser() {
-        DataAccess dataAccess = new DataAccessFacade();
-        return dataAccess.getCurrentUser();
-    }
 }

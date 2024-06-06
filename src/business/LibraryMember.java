@@ -1,7 +1,6 @@
 package business;
 
 import java.io.Serializable;
-import java.time.LocalDate;
 
 final public class LibraryMember extends Person implements Serializable {
 
@@ -14,31 +13,20 @@ final public class LibraryMember extends Person implements Serializable {
     public LibraryMember(String memberId, String fname, String lname, String tel, Address add) {
         super(fname, lname, tel, add);
         this.memberId = memberId;
-        this.checkoutRecord = new CheckoutRecord();
     }
 
-
-	public LibraryMember(String memberId, String fname, String lname, String tel,Address add) {
-		super(fname,lname, tel, add);
-		this.memberId = memberId;
-	}
+    public String getMemberId() {
+        return memberId;
+    }
 
     public CheckoutRecord getCheckoutRecord() {
         return checkoutRecord;
     }
 
-	public String getMemberId() {
-		return memberId;
-	}
-
-	public CheckoutRecord getCheckoutRecord() {
-		return checkoutRecord;
-	}
-
-	@Override
-	public String toString() {
-		return "Member Info: " + "ID: " + memberId + ", name: " + getFirstName() + " " + getLastName() +
-				", " + getTelephone() + " " + getAddress();
-	}
+    @Override
+    public String toString() {
+        return "Member Info: " + "ID: " + memberId + ", name: " + getFirstName() + " " + getLastName() +
+                ", " + getTelephone() + " " + getAddress();
+    }
 
 }
