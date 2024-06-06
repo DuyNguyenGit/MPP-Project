@@ -1,12 +1,12 @@
 package librarysystem.windows;
 
 import business.CheckoutRecord;
-import business.ControllerInterface;
-import business.SystemController;
+import controller.ControllerInterface;
+import controller.SystemController;
 import librarysystem.LibWindow;
 import librarysystem.LibrarySystem;
-import librarysystem.Util;
 import librarysystem.table.TableExample;
+import utils.Util;
 
 import javax.swing.*;
 import java.awt.*;
@@ -14,7 +14,7 @@ import java.util.List;
 
 public class CheckoutFormWindow extends JPanel implements LibWindow {
     public static final CheckoutFormWindow INSTANCE = new CheckoutFormWindow();
-
+    ControllerInterface ci = new SystemController();
     private boolean isInitialized = false;
 
     private JPanel mainPanel;
@@ -187,16 +187,15 @@ public class CheckoutFormWindow extends JPanel implements LibWindow {
         butn.addActionListener(evt -> {
             String memberId = memberIdField.getText();
             String isbn = isbnField.getText();
-            ControllerInterface ci = new SystemController();
             try {
-                List<CheckoutRecord> checkoutRecords = ci.checkoutForm(memberId,isbn);
+                List<CheckoutRecord> checkoutRecords = ci.checkoutForm(memberId, isbn);
                 TableExample tableDetail = new TableExample(checkoutRecords);
                 tableDetail.setValues(tableDetail.getModel());
                 tableDetail.getTable().updateUI();
                 tableDetail.setVisible(true);
                 LibrarySystem.hideAllWindows();
             } catch (Exception e) {
-                JOptionPane.showMessageDialog(this,e.getMessage());
+                JOptionPane.showMessageDialog(this, e.getMessage());
             }
         });
     }

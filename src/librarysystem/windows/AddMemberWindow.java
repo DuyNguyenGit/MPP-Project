@@ -1,9 +1,9 @@
 package librarysystem.windows;
 
-import business.LibrarySystemException;
-import business.SystemController;
+import controller.SystemController;
+import exception.LibrarySystemException;
 import librarysystem.LibWindow;
-import librarysystem.Util;
+import utils.Util;
 
 import javax.swing.*;
 import java.awt.*;

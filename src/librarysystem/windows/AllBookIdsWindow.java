@@ -1,10 +1,10 @@
 package librarysystem.windows;
 
-import business.ControllerInterface;
-import business.SystemController;
+import controller.ControllerInterface;
+import controller.SystemController;
 import librarysystem.LibWindow;
 import librarysystem.LibrarySystem;
-import librarysystem.Util;
+import utils.Util;
 
 import javax.swing.*;
 import java.awt.*;
@@ -13,76 +13,76 @@ import java.awt.event.ActionListener;
 
 
 public class AllBookIdsWindow extends JPanel implements LibWindow {
-	private static final long serialVersionUID = 1L;
-	public static final AllBookIdsWindow INSTANCE = new AllBookIdsWindow();
-	ControllerInterface ci = new SystemController();
-	private boolean isInitialized = false;
+    private static final long serialVersionUID = 1L;
+    public static final AllBookIdsWindow INSTANCE = new AllBookIdsWindow();
+    ControllerInterface ci = new SystemController();
+    private boolean isInitialized = false;
 
-	private JPanel mainPanel;
-	private JPanel topPanel;
-	private JPanel middlePanel;
-	private JPanel lowerPanel;
-	private TextArea textArea;
+    private JPanel mainPanel;
+    private JPanel topPanel;
+    private JPanel middlePanel;
+    private JPanel lowerPanel;
+    private TextArea textArea;
 
 
-	//Singleton class
-	private AllBookIdsWindow() {
-		super(new BorderLayout());
-	}
+    //Singleton class
+    private AllBookIdsWindow() {
+        super(new BorderLayout());
+    }
 
-	public void init() {
-		mainPanel = new JPanel();
-		mainPanel.setLayout(new BorderLayout());
-		defineTopPanel();
-		defineMiddlePanel();
-		defineLowerPanel();
-		mainPanel.add(topPanel, BorderLayout.NORTH);
-		mainPanel.add(middlePanel, BorderLayout.CENTER);
-		mainPanel.add(lowerPanel, BorderLayout.SOUTH);
-		add(mainPanel);
-		isInitialized(true);
-	}
+    public void init() {
+        mainPanel = new JPanel();
+        mainPanel.setLayout(new BorderLayout());
+        defineTopPanel();
+        defineMiddlePanel();
+        defineLowerPanel();
+        mainPanel.add(topPanel, BorderLayout.NORTH);
+        mainPanel.add(middlePanel, BorderLayout.CENTER);
+        mainPanel.add(lowerPanel, BorderLayout.SOUTH);
+        add(mainPanel);
+        isInitialized(true);
+    }
 
-	public void defineTopPanel() {
-		topPanel = new JPanel();
-		JLabel AllIDsLabel = new JLabel("All Book IDs");
-		Util.adjustLabelFont(AllIDsLabel, Util.DARK_BLUE, true);
-		topPanel.setLayout(new FlowLayout(FlowLayout.CENTER));
-		topPanel.add(AllIDsLabel);
-	}
+    public void defineTopPanel() {
+        topPanel = new JPanel();
+        JLabel AllIDsLabel = new JLabel("All Book IDs");
+        Util.adjustLabelFont(AllIDsLabel, Util.DARK_BLUE, true);
+        topPanel.setLayout(new FlowLayout(FlowLayout.CENTER));
+        topPanel.add(AllIDsLabel);
+    }
 
-	public void defineMiddlePanel() {
-		middlePanel = new JPanel();
-		FlowLayout fl = new FlowLayout(FlowLayout.CENTER, 25, 25);
-		middlePanel.setLayout(fl);
-		textArea = new TextArea(8, 20);
-		//populateTextArea();
-		middlePanel.add(textArea);
+    public void defineMiddlePanel() {
+        middlePanel = new JPanel();
+        FlowLayout fl = new FlowLayout(FlowLayout.CENTER, 25, 25);
+        middlePanel.setLayout(fl);
+        textArea = new TextArea(8, 20);
+        //populateTextArea();
+        middlePanel.add(textArea);
 
-	}
+    }
 
-	public void defineLowerPanel() {
+    public void defineLowerPanel() {
 
-		JButton backToMainButn = new JButton("<= Back to Main");
-		backToMainButn.addActionListener(new BackToMainListener());
-		lowerPanel = new JPanel();
-		lowerPanel.setLayout(new FlowLayout(FlowLayout.LEFT));
-		;
-		lowerPanel.add(backToMainButn);
-	}
+        JButton backToMainButn = new JButton("<= Back to Main");
+        backToMainButn.addActionListener(new BackToMainListener());
+        lowerPanel = new JPanel();
+        lowerPanel.setLayout(new FlowLayout(FlowLayout.LEFT));
+        ;
+        lowerPanel.add(backToMainButn);
+    }
 
-	class BackToMainListener implements ActionListener {
-		@Override
-		public void actionPerformed(ActionEvent evt) {
-			LibrarySystem.hideAllWindows();
-			LibrarySystem.INSTANCE.setVisible(true);
+    class BackToMainListener implements ActionListener {
+        @Override
+        public void actionPerformed(ActionEvent evt) {
+            LibrarySystem.hideAllWindows();
+            LibrarySystem.INSTANCE.setVisible(true);
 
-		}
-	}
+        }
+    }
 
-	public void setData(String data) {
-		textArea.setText(data);
-	}
+    public void setData(String data) {
+        textArea.setText(data);
+    }
 
 //	private void populateTextArea() {
 //		//populate
@@ -95,15 +95,15 @@ public class AllBookIdsWindow extends JPanel implements LibWindow {
 //		textArea.setText(sb.toString());
 //	}
 
-	@Override
-	public boolean isInitialized() {
-		// TODO Auto-generated method stub
-		return isInitialized;
-	}
+    @Override
+    public boolean isInitialized() {
+        // TODO Auto-generated method stub
+        return isInitialized;
+    }
 
-	@Override
-	public void isInitialized(boolean val) {
-		isInitialized = val;
+    @Override
+    public void isInitialized(boolean val) {
+        isInitialized = val;
 
-	}
+    }
 }
