@@ -3,6 +3,7 @@ package librarysystem.app_main;
 import business.SystemController;
 import dataaccess.Auth;
 import librarysystem.MainLibrarySystem;
+import librarysystem.windows.AddBookCopyWindow;
 import librarysystem.windows.AddMemberWindow;
 import librarysystem.windows.AllMemberIdsWindow;
 import librarysystem.windows.CheckoutFormWindow;
@@ -96,7 +97,7 @@ public class AppPanel extends JPanel {
 
         dashboard = DashboardWindow.INSTANCE;
         addMember = AddMemberWindow.INSTANCE;
-        addBookCopy = new JPanel(new CardLayout());
+        addBookCopy = AddBookCopyWindow.INSTANCE;
         allMemberIds = AllMemberIdsWindow.INSTANCE;
         allBook = new JPanel(new CardLayout());
         checkOutBook = CheckoutFormWindow.INSTANCE;

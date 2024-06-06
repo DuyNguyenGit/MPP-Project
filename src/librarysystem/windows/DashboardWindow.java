@@ -17,7 +17,7 @@ public class DashboardWindow extends JPanel implements LibWindow {
     @Override
     public void init() {
         String currDirectory = System.getProperty("user.dir");
-        String pathToImage = currDirectory + "/src/librarysystem/library.jpg";
+        String pathToImage = currDirectory + "/src/resources/library.jpg";
         ImageIcon image = new ImageIcon(pathToImage);
         JLabel icon = new JLabel(image);
         add(icon, BorderLayout.CENTER);

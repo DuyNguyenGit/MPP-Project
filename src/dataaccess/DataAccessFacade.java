@@ -99,6 +99,41 @@ public class DataAccessFacade implements DataAccess {
         return (HashMap<String, Book>) readFromStorage(StorageType.BOOKS);
     }
 
+    // implement: other save operations
+    public void saveNewMember(LibraryMember member) {
+        HashMap<String, LibraryMember> mems = readMemberMap();
+        if (mems != null) {
+            String memberId = member.getMemberId();
+            mems.put(memberId, member);
+            saveToStorage(StorageType.MEMBERS, mems);
+        }
+    }
+
+    @Override
+    public LibraryMember searchMember(String memberId) {
+        HashMap<String, LibraryMember> members = (HashMap<String, LibraryMember>) readFromStorage(StorageType.MEMBERS);
+        if (members != null) {
+            return members.get(memberId);
+        }
+        return null;
+    }
+
+    @Override
+    public Book searchBook(String isbn) {
+        HashMap<String, Book> books = (HashMap<String, Book>) readFromStorage(StorageType.BOOKS);
+        return books.get(isbn);
+    }
+
+    @Override
+    public void saveBook(Book book) {
+        HashMap<String, Book> books = readBooksMap();
+        if (books != null) {
+            String bookisbn = book.getIsbn();
+            books.put(bookisbn, book);
+            saveToStorage(StorageType.BOOKS, books);
+        }
+    }
+
     /**
      * read current user
      *

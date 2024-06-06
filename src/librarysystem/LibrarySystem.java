@@ -3,6 +3,7 @@ package librarysystem;
 import business.ControllerInterface;
 import business.SystemController;
 import librarysystem.windows.*;
+import utils.Util;
 
 import javax.swing.*;
 import java.awt.*;
@@ -59,7 +60,7 @@ public class LibrarySystem extends JFrame implements LibWindow {
 
     private void setPathToImage() {
         String currDirectory = System.getProperty("user.dir");
-        pathToImage = currDirectory + "/src/librarysystem/library.jpg";
+        pathToImage = currDirectory + "/src/resources/library.jpg";
     }
 
     private void insertSplashImage() {
@@ -155,6 +156,7 @@ public class LibrarySystem extends JFrame implements LibWindow {
 		}
 
     }
+
     class AddNewLibraryMember implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {

@@ -1,20 +1,18 @@
-package librarysystem.ui;
+package librarysystem.windows;
 
 import business.Book;
 import business.BookCopy;
 import controller.ControllerInterface;
 import controller.SystemController;
 import exception.LibrarySystemException;
-import utils.Util;
+import librarysystem.LibWindow;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 
-public class AddBookCopyWindow extends JFrame implements LibWindow {
+public class AddBookCopyWindow extends JPanel implements LibWindow {
 
     private static final long serialVersionUID = 1L;
     public static final AddBookCopyWindow INSTANCE = new AddBookCopyWindow();
@@ -22,36 +20,35 @@ public class AddBookCopyWindow extends JFrame implements LibWindow {
     private boolean isInitialized = false;
 
     private JPanel mainPanel;
-    private JPanel topPanel;
     private JPanel middlePanel;
-    private JPanel lowerPanel;
     private TextField isbnTxtField;
     private JButton addBookCopyBtn;
     private JTable bookCopyTable;
 
     //Singleton class
     private AddBookCopyWindow() {
+        super(new BorderLayout());
+        init();
+    }
+
+    @Override
+    public boolean isInitialized() {
+        return isInitialized;
+    }
+
+    @Override
+    public void isInitialized(boolean val) {
+        isInitialized = val;
     }
 
     public void init() {
         mainPanel = new JPanel();
-        mainPanel.setLayout(new BorderLayout());
-        defineTopPanel();
+        mainPanel.setLayout(null);
         defineMiddlePanel();
-        defineLowerPanel();
-        mainPanel.add(topPanel, BorderLayout.NORTH);
         mainPanel.add(middlePanel, BorderLayout.CENTER);
-        mainPanel.add(lowerPanel, BorderLayout.SOUTH);
-        getContentPane().add(mainPanel);
-        isInitialized = true;
-    }
-
-    public void defineTopPanel() {
-        topPanel = new JPanel();
-        JLabel AllIDsLabel = new JLabel("Add new Book Copy");
-        Util.adjustLabelFont(AllIDsLabel, Util.DARK_BLUE, true);
-        topPanel.setLayout(new FlowLayout(FlowLayout.CENTER));
-        topPanel.add(AllIDsLabel);
+        add(mainPanel);
+        isInitialized(true);
+        setSize(621, 450);
     }
 
     public void defineMiddlePanel() {
@@ -75,14 +72,6 @@ public class AddBookCopyWindow extends JFrame implements LibWindow {
         middlePanel.add(bookCopyTable);
     }
 
-    public void defineLowerPanel() {
-        JButton backToMainButn = new JButton("Back to Main");
-        backToMainButn.addActionListener(new BackToMainListener());
-        lowerPanel = new JPanel();
-        lowerPanel.setLayout(new FlowLayout(FlowLayout.LEFT));
-        lowerPanel.add(backToMainButn);
-    }
-
     private void addBookCopyButtonListener(JButton butn) {
         butn.addActionListener(evt -> {
             try {
@@ -103,30 +92,12 @@ public class AddBookCopyWindow extends JFrame implements LibWindow {
         });
     }
 
-    class BackToMainListener implements ActionListener {
-        @Override
-        public void actionPerformed(ActionEvent evt) {
-            resetForm();
-            LibrarySystem.hideAllWindows();
-            LibrarySystem.INSTANCE.setVisible(true);
-        }
-    }
-
     private String getIsbnValue() {
         return isbnTxtField.getText();
     }
 
-    private void resetForm() {
+    private void clearFields() {
         isbnTxtField.setText("");
     }
 
-    @Override
-    public boolean isInitialized() {
-        return isInitialized;
-    }
-
-    @Override
-    public void isInitialized(boolean val) {
-        isInitialized = val;
-    }
 }

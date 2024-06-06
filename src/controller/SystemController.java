@@ -17,6 +17,8 @@ import java.util.Optional;
 
 public class SystemController implements ControllerInterface {
 
+    private DataAccess dataAccess = new DataAccessFacade();
+
     public User login(String id, String password) throws LoginException {
         if (Util.isEmpty(id) || Util.isEmpty(password)) {
             throw new LoginException("ID and Password must be not empty");

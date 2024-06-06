@@ -1,4 +1,4 @@
-package librarysystem.ui;
+package librarysystem;
 
 public interface LibWindow {
     void init();
