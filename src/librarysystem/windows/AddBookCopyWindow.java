@@ -8,6 +8,7 @@ import exception.LibrarySystemException;
 import librarysystem.LibWindow;
 
 import javax.swing.*;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 
@@ -61,6 +62,7 @@ public class AddBookCopyWindow extends JPanel implements LibWindow {
         addBookCopyBtn = new JButton("Add Book Copy");
         addBookCopyButtonListener(addBookCopyBtn);
         mainPanel.add(addBookCopyBtn);
+
         defineBookCopyTable();
     }
 
@@ -76,35 +78,47 @@ public class AddBookCopyWindow extends JPanel implements LibWindow {
         mainPanel.add(sp);
     }
 
+    private String getIsbnValue() {
+        return isbnTxtField.getText().trim();
+    }
+
+    private void clearFields() {
+        isbnTxtField.setText("");
+    }
+
     private void addBookCopyButtonListener(JButton butn) {
         butn.addActionListener(evt -> {
             try {
                 Book book = ci.addNewBookCopy(getIsbnValue());
-                DefaultTableModel defaultTableModel = (DefaultTableModel) bookCopyTable.getModel();
-                defaultTableModel.getDataVector().removeAllElements();
-
-                int no = 0;
-                for (int i = book.getCopies().length - 1; i >= 0; i--) {
-                    no++;
-                    BookCopy bookCopy = book.getCopies()[i];
-                    Object[] rowData = new Object[]{no, book.getIsbn(), book.getTitle(), bookCopy.getCopyNum(), bookCopy.isAvailable()};
-                    defaultTableModel.addRow(rowData);
-                }
-
-                bookCopyTable.setModel(defaultTableModel);
-                bookCopyTable.updateUI();
+                populateTableData(book);
             } catch (LibrarySystemException e) {
                 JOptionPane.showMessageDialog(this, e.getMessage());
             }
         });
     }
 
-    private String getIsbnValue() {
-        return isbnTxtField.getText();
+    private void populateTableData(Book book) {
+        DefaultTableModel defaultTableModel = (DefaultTableModel) bookCopyTable.getModel();
+        defaultTableModel.getDataVector().removeAllElements();
+
+        int no = 0;
+        for (int i = book.getCopies().length - 1; i >= 0; i--) {
+            no++;
+            BookCopy bookCopy = book.getCopies()[i];
+            Object[] rowData = new Object[]{no, book.getIsbn(), book.getTitle(), bookCopy.getCopyNum(), bookCopy.isAvailable() ? "Yes" : "No"};
+            defaultTableModel.addRow(rowData);
+        }
+
+        bookCopyTable.setModel(defaultTableModel);
+        setFirstRowColor();
+        bookCopyTable.updateUI();
     }
 
-    private void clearFields() {
-        isbnTxtField.setText("");
+    private void setFirstRowColor() {
+        DefaultTableCellRenderer firstRowRender = new DefaultTableCellRenderer();
+        firstRowRender.setForeground(Color.red);
+        //
     }
+
 
 }
