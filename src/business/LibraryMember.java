@@ -1,11 +1,14 @@
 package business;
 
 import java.io.Serializable;
-import java.time.LocalDate;
 
+final public class LibraryMember extends Person implements Serializable {
+    private String memberId;
 
-import dataaccess.DataAccess;
-import dataaccess.DataAccessFacade;
+    public LibraryMember(String memberId, String fname, String lname, String tel, Address add) {
+        super(fname, lname, tel, add);
+        this.memberId = memberId;
+    }
 
 final public class LibraryMember extends Person implements Serializable {
 	private String memberId;
@@ -31,5 +34,4 @@ final public class LibraryMember extends Person implements Serializable {
 				", " + getTelephone() + " " + getAddress();
 	}
 
-	private static final long serialVersionUID = -2226197306790714013L;
 }
