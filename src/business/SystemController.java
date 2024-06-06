@@ -72,6 +72,15 @@ public class SystemController implements ControllerInterface {
 		return checkoutRecords;
 	}
 
+	@Override
+	public List<CheckoutRecord> loadCheckoutRecord() {
+		HashMap<String, CheckoutRecord> checkoutRecordHashMap = dataAccess.readCheckoutRecordMap();
+		if(checkoutRecordHashMap == null){
+			checkoutRecordHashMap = new HashMap<>();
+		}
+        return checkoutRecordHashMap.values().stream().toList();
+	}
+
 	private BookCopy checkAvailableBookCopy(HashMap<String, Book> bookMap, String isbn) throws LibrarySystemException {
 		BookCopy[] bookCopies = bookMap.get(isbn).getCopies();
         for (BookCopy bookCopy : bookCopies) {

@@ -11,4 +11,5 @@ public interface ControllerInterface {
 	public List<String> allMemberIds();
 	public List<String> allBookIds();
 	public List<CheckoutRecord> checkoutForm(String memberId, String isbn) throws Exception;
+	List<CheckoutRecord> loadCheckoutRecord();
 }
