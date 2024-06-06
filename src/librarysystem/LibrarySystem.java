@@ -2,10 +2,7 @@ package librarysystem;
 
 import business.ControllerInterface;
 import business.SystemController;
-import librarysystem.windows.AddMemberWindow;
-import librarysystem.windows.AllBookIdsWindow;
-import librarysystem.windows.AllMemberIdsWindow;
-import librarysystem.windows.LoginWindow;
+import librarysystem.windows.*;
 
 import javax.swing.*;
 import java.awt.*;
@@ -134,7 +131,7 @@ public class LibrarySystem extends JFrame implements LibWindow {
 		public void actionPerformed(ActionEvent e) {
 			LibrarySystem.hideAllWindows();
 			AllMemberIdsWindow.INSTANCE.init();
-			AllMemberIdsWindow.INSTANCE.pack();
+//			AllMemberIdsWindow.INSTANCE.pack();
 			AllMemberIdsWindow.INSTANCE.setVisible(true);
 
 
@@ -148,8 +145,8 @@ public class LibrarySystem extends JFrame implements LibWindow {
 				sb.append(s + "\n");
 			}
 			System.out.println(sb.toString());
-			AllMemberIdsWindow.INSTANCE.setData(sb.toString());
-			AllMemberIdsWindow.INSTANCE.pack();
+//			AllMemberIdsWindow.INSTANCE.setData(sb.toString());
+//			AllMemberIdsWindow.INSTANCE.pack();
 			//AllMemberIdsWindow.INSTANCE.setSize(660,500);
 			Util.centerFrameOnDesktop(AllMemberIdsWindow.INSTANCE);
 			AllMemberIdsWindow.INSTANCE.setVisible(true);

@@ -12,6 +12,8 @@ import java.util.List;
 
 public class SystemController implements ControllerInterface {
 	public static Auth currentAuth = null;
+
+	private DataAccess dataAccess = new DataAccessFacade();
 	
 	public void login(String id, String password) throws LoginException {
 		DataAccess da = new DataAccessFacade();
@@ -78,5 +80,67 @@ public class SystemController implements ControllerInterface {
             }
         }
 		throw new LibrarySystemException("This book is out of copies");
+	}
+
+	public static String[][] allMembers() {
+		DataAccess da = new DataAccessFacade();
+		List<LibraryMember> retval = new ArrayList<>();
+		retval.addAll(da.readMemberMap().values());
+		String[][] results = new String[retval.size()][5];
+		int i = 0;
+		for (LibraryMember lb : retval) {
+			String[] value = new String[5];
+			value[0] = (i + 1) + "";
+			value[1] = lb.getMemberId();
+			value[2] = lb.getFirstName();
+			value[3] = lb.getLastName();
+			value[4] = lb.getTelephone();
+			results[i] = value;
+			i++;
+		}
+
+		return results;
+	}
+
+	public void addNewLibraryMember(String fname, String lname, String mId, String tel, String street, String city,
+									String state,
+									String zip) throws LibrarySystemException {
+		LibraryMember libraryMember = dataAccess.searchMember(mId);
+		if (libraryMember != null) {
+//        JOptionPane.showMessageDialog(CheckOutBookWindow.INSTANCE, "Member ID NOT found");
+			throw new LibrarySystemException("Member already exist");
+		}
+
+		if (fname.trim().isEmpty() || lname.trim().isEmpty() || mId.trim().isEmpty() || tel.trim().isEmpty()
+				|| street.trim().isEmpty() || city.trim().isEmpty() || state.trim().isEmpty() || zip.trim().isEmpty()) {
+			throw new LibrarySystemException("All fields must be non-empty!");
+		}
+
+		String zipcoderegex = "^\\d{5}";
+		if (!zip.matches(zipcoderegex)) {
+			throw new LibrarySystemException("ZipCode is illegal");
+		}
+		String telePhoneRegex = "^\\d{3}-\\d{3}-\\d{4}$";
+		if (!tel.matches(telePhoneRegex)) {
+			throw new LibrarySystemException("telephone number input is illegal");
+		}
+		String mIDRegexString = "^\\d{4}";
+		if (!mId.matches(mIDRegexString)) {
+			throw new LibrarySystemException("Member ID should be four digits");
+		}
+
+		char[] chs = mId.toCharArray();
+		for (char ch : chs) {
+			if (ch < '0' || ch > '9') {
+				throw new LibrarySystemException("Member Id must be numeric");
+			}
+		}
+
+		Address address = new Address(street, city, state, zip);
+		LibraryMember member = new LibraryMember(mId, fname, lname, tel, address);
+
+		DataAccess da = new DataAccessFacade();
+		da.saveNewMember(member);
+
 	}
 }

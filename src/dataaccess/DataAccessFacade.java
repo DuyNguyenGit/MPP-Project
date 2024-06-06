@@ -1,5 +1,4 @@
 package dataaccess;
-import java.io.*;
 
 import business.Book;
 import business.LibraryMember;
@@ -15,7 +14,6 @@ import java.util.HashMap;
 import java.util.List;
 
 import business.*;
-import dataaccess.DataAccessFacade.StorageType;
 
 
 public class DataAccessFacade implements DataAccess {
@@ -62,6 +60,14 @@ public class DataAccessFacade implements DataAccess {
 			}
 		}
 		saveToStorage(StorageType.BOOKS, books);
+	}
+	@Override
+	public LibraryMember searchMember(String memberId) {
+		HashMap<String, LibraryMember> members = (HashMap<String, LibraryMember>) readFromStorage(StorageType.MEMBERS);
+		if (members != null) {
+			return members.get(memberId);
+		}
+		return null;
 	}
 
 	@SuppressWarnings("unchecked")

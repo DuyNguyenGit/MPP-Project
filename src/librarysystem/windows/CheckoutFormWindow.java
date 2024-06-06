@@ -1,17 +1,18 @@
-package librarysystem;
+package librarysystem.windows;
 
 import business.CheckoutRecord;
 import business.ControllerInterface;
 import business.SystemController;
+import librarysystem.LibWindow;
+import librarysystem.LibrarySystem;
+import librarysystem.Util;
 import librarysystem.table.TableExample;
 
 import javax.swing.*;
 import java.awt.*;
 import java.util.List;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
-public class CheckoutFormWindow extends JFrame implements LibWindow {
+public class CheckoutFormWindow extends JPanel implements LibWindow {
     public static final CheckoutFormWindow INSTANCE = new CheckoutFormWindow();
 
     private boolean isInitialized = false;
@@ -51,6 +52,7 @@ public class CheckoutFormWindow extends JFrame implements LibWindow {
 
     /* This class is a singleton */
     private CheckoutFormWindow() {
+        init();
     }
 
     public void init() {
@@ -65,9 +67,9 @@ public class CheckoutFormWindow extends JFrame implements LibWindow {
         mainPanel.add(upperHalf, BorderLayout.NORTH);
         mainPanel.add(middleHalf, BorderLayout.CENTER);
         mainPanel.add(lowerHalf, BorderLayout.SOUTH);
-        getContentPane().add(mainPanel);
+        add(mainPanel);
         isInitialized(true);
-        pack();
+//        pack();
         //setSize(660, 500);
 
 
