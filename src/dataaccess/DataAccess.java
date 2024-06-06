@@ -1,12 +1,11 @@
 package dataaccess;
 
-import java.util.HashMap;
-
 import business.Book;
 import business.BookCopy;
 import business.CheckoutRecord;
 import business.LibraryMember;
-import dataaccess.DataAccessFacade.StorageType;
+
+import java.util.HashMap;
 
 public interface DataAccess { 
 	public HashMap<String,Book> readBooksMap();
