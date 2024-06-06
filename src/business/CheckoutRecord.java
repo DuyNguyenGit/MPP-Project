@@ -1,36 +1,38 @@
 package business;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CheckoutRecord implements Serializable{
+public class CheckoutRecord implements Serializable {
+    @Serial
+    private static final long serialVersionUID = -728095373785964854L;
+    private LibraryMember libraryMember;
+    private List<CheckoutRecordEntry> checkoutRecordEntryList = new ArrayList<>();
+    private List<Fine> fineList = new ArrayList<>();
 
-    private static final long serialVersionUID = 111828999272875133L;
-	private List<CheckoutRecordEntry> checkoutRecordEntries;
-
-    public CheckoutRecord() {
-        this.checkoutRecordEntries = new ArrayList<>();
+    CheckoutRecord(LibraryMember libraryMember, CheckoutRecordEntry RecordEntry){
+        this.libraryMember = libraryMember;
+        this.checkoutRecordEntryList.add(RecordEntry);
     }
 
-    public void addEntry(CheckoutRecordEntry checkoutRecordEntry) {
-        checkoutRecordEntries.add(checkoutRecordEntry);
+    public void addEntry(CheckoutRecordEntry checkoutRecordEntry){
+        checkoutRecordEntryList.add(checkoutRecordEntry);
+    }
+    public LibraryMember getLibraryMember() {
+        return libraryMember;
     }
 
-    public CheckoutRecordEntry getEntryByBookCopy(BookCopy copy) {
-    	for (CheckoutRecordEntry checkoutRecordEntry : checkoutRecordEntries) {
-			if(copy.equals(checkoutRecordEntry.getCopy())) return checkoutRecordEntry;
-		}
-    	return null;
+    public List<CheckoutRecordEntry> getCheckoutRecordEntryList() {
+        return checkoutRecordEntryList;
     }
-	
-	public List<CheckoutRecordEntry> getCheckoutRecordEntries() {
-		return checkoutRecordEntries;
-	}
 
-	public void setCheckoutRecordEntries(List<CheckoutRecordEntry> checkoutRecordEntries) {
-		this.checkoutRecordEntries = checkoutRecordEntries;
-	}
-    
-    
+    public void setLibraryMember(LibraryMember libraryMember) {
+        this.libraryMember = libraryMember;
+    }
+
+    public void setCheckoutRecordEntryList(List<CheckoutRecordEntry> checkoutRecordEntryList) {
+        this.checkoutRecordEntryList = checkoutRecordEntryList;
+    }
 }

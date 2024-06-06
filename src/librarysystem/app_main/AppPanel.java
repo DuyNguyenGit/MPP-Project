@@ -5,6 +5,7 @@ import dataaccess.Auth;
 import librarysystem.MainLibrarySystem;
 import librarysystem.windows.AddMemberWindow;
 import librarysystem.windows.AllMemberIdsWindow;
+import librarysystem.windows.CheckoutFormWindow;
 import librarysystem.windows.DashboardWindow;
 
 import javax.swing.*;
@@ -98,7 +99,7 @@ public class AppPanel extends JPanel {
         addBookCopy = new JPanel(new CardLayout());
         allMemberIds = AllMemberIdsWindow.INSTANCE;
         allBook = new JPanel(new CardLayout());
-        checkOutBook = new JPanel(new CardLayout());
+        checkOutBook = CheckoutFormWindow.INSTANCE;
         checkoutRecord = new JPanel(new CardLayout());
         bookCopies = new JPanel(new CardLayout());
 

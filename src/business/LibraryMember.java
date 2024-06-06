@@ -14,7 +14,6 @@ final public class LibraryMember extends Person implements Serializable {
 	public LibraryMember(String memberId, String fname, String lname, String tel,Address add) {
 		super(fname,lname, tel, add);
 		this.memberId = memberId;
-		this.checkoutRecord = new CheckoutRecord();
 	}
 
 
@@ -33,10 +32,4 @@ final public class LibraryMember extends Person implements Serializable {
 	}
 
 	private static final long serialVersionUID = -2226197306790714013L;
-
-	public void checkout(BookCopy copy, LocalDate checkoutDate, LocalDate dueDate) {
-		copy.setAvailable(false);
-		CheckoutRecordEntry checkoutEntry = CheckoutRecordEntry.createEntry(copy, checkoutDate, dueDate);
-		getCheckoutRecord().addEntry(checkoutEntry);
-	}
 }

@@ -1,51 +1,44 @@
 package business;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.time.LocalDate;
 
-public class CheckoutRecordEntry implements Serializable{
+public class CheckoutRecordEntry implements Serializable {
+    @Serial
+    private static final long serialVersionUID = 6550573558639754705L;
 
-    private static final long serialVersionUID = -1417908710325021138L;
-	private LocalDate checkoutDate;
+    private LocalDate checkOutDate;
     private LocalDate dueDate;
+    private BookCopy bookCopy;
 
-    private BookCopy copy;
-    
-    
+    public CheckoutRecordEntry(LocalDate checkOutDate, LocalDate dueDate, BookCopy bookCopy) {
+        this.checkOutDate = checkOutDate;
+        this.dueDate = dueDate;
+        this.bookCopy = bookCopy;
+    }
 
- 
+    public LocalDate getCheckOutDate() {
+        return checkOutDate;
+    }
 
-	public LocalDate getCheckoutDate() {
-		return checkoutDate;
-	}
+    public void setCheckOutDate(LocalDate checkOutDate) {
+        this.checkOutDate = checkOutDate;
+    }
 
-	public LocalDate getDueDate() {
-		return dueDate;
-	}
+    public LocalDate getDueDate() {
+        return dueDate;
+    }
 
-	public BookCopy getCopy() {
-		return copy;
-	}
-
-	public void setCheckoutDate(LocalDate checkoutDate) {
-		this.checkoutDate = checkoutDate;
-	}
-
-	public void setDueDate(LocalDate dueDate) {
-		this.dueDate = dueDate;
-	}
-
-	public void setCopy(BookCopy copy) {
-		this.copy = copy;
-	}
-
-	public CheckoutRecordEntry(BookCopy copy, LocalDate checkoutDate, LocalDate dueDate) {
-        this.copy = copy;
-        this.checkoutDate = checkoutDate;
+    public void setDueDate(LocalDate dueDate) {
         this.dueDate = dueDate;
     }
 
-	public static CheckoutRecordEntry createEntry(BookCopy copy, LocalDate checkoutDate, LocalDate dueDate) {
-		return new CheckoutRecordEntry(copy, checkoutDate, dueDate);
-	}
+    public BookCopy getBookNum() {
+        return bookCopy;
+    }
+
+    public void setBookNum(BookCopy bookCopy) {
+        this.bookCopy = bookCopy;
+    }
 }

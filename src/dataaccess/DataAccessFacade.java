@@ -13,10 +13,13 @@ import java.nio.file.Path;
 import java.util.HashMap;
 import java.util.List;
 
+import business.*;
+
+
 public class DataAccessFacade implements DataAccess {
 	
-	public enum StorageType {
-		BOOKS, MEMBERS, USERS;
+	enum StorageType {
+		BOOKS, MEMBERS, USERS, CHECKOUTRECORD;
 	}
 
 	public static final String OUTPUT_DIR = System.getProperty("user.dir") + "/src/dataaccess/storage"; // for Unix file
@@ -34,6 +37,30 @@ public class DataAccessFacade implements DataAccess {
 		}
 	}
 
+	public HashMap<String, CheckoutRecord> saveNewCheckoutRecord(CheckoutRecord checkoutRecord) {
+		HashMap<String, CheckoutRecord> checkoutRecordHashMap = readCheckoutRecordMap();
+		if(checkoutRecordHashMap == null){
+			checkoutRecordHashMap = new HashMap<>();
+		}
+		String memberId = checkoutRecord.getLibraryMember().getMemberId();
+		checkoutRecordHashMap.put(memberId, checkoutRecord);
+		saveToStorage(StorageType.CHECKOUTRECORD, checkoutRecordHashMap);
+		return checkoutRecordHashMap;
+	}
+
+	@Override
+	public void updateBookCopyAvailability(String isbn, BookCopy checkoutBookCopy) {
+		HashMap<String, Book> books = readBooksMap();
+		BookCopy[] bookCopies = books.get(isbn).getCopies();
+		int newCopyNum = checkoutBookCopy.getCopyNum();
+
+		for(BookCopy bookCopy: bookCopies){
+			if(bookCopy.getCopyNum() == newCopyNum){
+				bookCopy.changeAvailability();
+			}
+		}
+		saveToStorage(StorageType.BOOKS, books);
+	}
 	@Override
 	public LibraryMember searchMember(String memberId) {
 		HashMap<String, LibraryMember> members = (HashMap<String, LibraryMember>) readFromStorage(StorageType.MEMBERS);
@@ -43,20 +70,9 @@ public class DataAccessFacade implements DataAccess {
 		return null;
 	}
 
-	@Override
-	public Book searchBook(String isbn) {
-		HashMap<String, Book> books = (HashMap<String, Book>) readFromStorage(StorageType.BOOKS);
-		return books.get(isbn);
-	}
-
-	@Override
-	public void saveBook(Book book) {
-		HashMap<String, Book> books = readBooksMap();
-		if (books != null) {
-			String bookisbn = book.getIsbn();
-			books.put(bookisbn, book);
-			saveToStorage(StorageType.BOOKS, books);
-		}
+	@SuppressWarnings("unchecked")
+	public HashMap<String, CheckoutRecord> readCheckoutRecordMap() {
+		return (HashMap<String,CheckoutRecord>) readFromStorage(StorageType.CHECKOUTRECORD);
 	}
 
 	@SuppressWarnings("unchecked")
@@ -72,7 +88,8 @@ public class DataAccessFacade implements DataAccess {
 		// memberId -> LibraryMember
 		return (HashMap<String, LibraryMember>) readFromStorage(StorageType.MEMBERS);
 	}
-
+	
+	
 	@SuppressWarnings("unchecked")
 	public HashMap<String, User> readUserMap() {
 		// Returns a Map with name/value pairs being
@@ -127,7 +144,7 @@ public class DataAccessFacade implements DataAccess {
 			in = new ObjectInputStream(Files.newInputStream(path));
 			retVal = in.readObject();
 		} catch (Exception e) {
-			e.printStackTrace();
+//			e.printStackTrace();
 		} finally {
 			if (in != null) {
 				try {
