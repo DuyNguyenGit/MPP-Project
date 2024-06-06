@@ -1,36 +1,36 @@
 package librarysystem.windows;
 
-import business.SystemController;
+import librarysystem.LibWindow;
 
 import javax.swing.*;
 import java.awt.*;
 
-public class DashboardWindow extends JPanel {
+public class DashboardWindow extends JPanel implements LibWindow {
     public static final DashboardWindow INSTANCE = new DashboardWindow();
-    SystemController ci = new SystemController();
-
-    private JPanel mainPanel, statitsiquePanel, booksCounterPanel, memberCounterPanel, recordCounterPanel,
-            profilePicturePanel;
-    private JLabel booksCounterLabel, memberCounterLabel, recordCounterLabel;
+    private boolean isInitialized = false;
 
     private DashboardWindow() {
         super(new CardLayout());
         init();
     }
 
+    @Override
     public void init() {
-        setProfilePicture();
-
-    }
-
-    private void setProfilePicture() {
         String currDirectory = System.getProperty("user.dir");
         String pathToImage = currDirectory + "/src/librarysystem/library.jpg";
         ImageIcon image = new ImageIcon(pathToImage);
-
         JLabel icon = new JLabel(image);
         add(icon, BorderLayout.CENTER);
-
+        isInitialized(true);
     }
 
+    @Override
+    public boolean isInitialized() {
+        return isInitialized;
+    }
+
+    @Override
+    public void isInitialized(boolean val) {
+        this.isInitialized = val;
+    }
 }

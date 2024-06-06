@@ -2,8 +2,10 @@ package librarysystem.app_main;
 
 import business.SystemController;
 import dataaccess.Auth;
-import librarysystem.*;
-import librarysystem.windows.*;
+import librarysystem.MainLibrarySystem;
+import librarysystem.windows.AddMemberWindow;
+import librarysystem.windows.AllMemberIdsWindow;
+import librarysystem.windows.DashboardWindow;
 
 import javax.swing.*;
 import java.awt.*;
@@ -12,20 +14,16 @@ public class AppPanel extends JPanel {
     public static AppPanel INSTANCE = new AppPanel();
     private JSplitPane splitPane;
 
-    private JPanel leftLoginSide;
-    private JPanel rightLoginSide;
+    private JPanel leftSidePanel;
+    private JPanel rightSidePanel;
 
     private JButton logoutBtn;
 
     private JList sideBarMenuList;
 
-    private JPanel dashboard, addBookPanel, addMember, AllMemberIds, AllBook;
-    private DashboardWindow dashboardWindow;
-    private CheckOutBookWindow checkOutBookWindow;
-    private AddBookCopyWindow addBookCopy;
-    private CheckoutRecordWindow checkoutRecord;
-    private BookCopiesWindow bookCopiesWindow;
-    private String[] listMenu = {"Dashboard", "Add Member", "Add Book", "Add Book Copy", "Members", "Books",
+    private JPanel dashboard, addMember, allMemberIds, addBookCopy, allBook, checkOutBook, checkoutRecord, bookCopies;
+
+    private String[] listMenu = {"Dashboard", "Add Member", "Members", "Add Book Copy", "Books",
             "CheckOut Book", "CheckOut Record", "Copies"};
     private String[] listAdminMenu = {"Dashboard", "Add Member", "Add Book", "Add Book Copy", "Members", "Books",
             "Copies"};
@@ -47,18 +45,18 @@ public class AppPanel extends JPanel {
     }
 
     public void setRoleMenu() {
-        leftLoginSide.removeAll();
-        paintMenu();
+        leftSidePanel.removeAll();
+        addMenu();
         goToDashBoard();
     }
 
     private void setLeftAppSidePanel() {
-        leftLoginSide = new JPanel();
-        leftLoginSide.setBackground(Color.lightGray);
-        paintMenu();
+        leftSidePanel = new JPanel();
+        leftSidePanel.setBackground(Color.LIGHT_GRAY);
+        addMenu();
     }
 
-    public void paintMenu() {
+    public void addMenu() {
         sideBarMenuList = new JList<String>(getRoleMenu());
         sideBarMenuList.setBackground(Color.WHITE);
         sideBarMenuList.setForeground(Color.black);
@@ -70,7 +68,7 @@ public class AppPanel extends JPanel {
         sideBarMenuList.setSelectionBackground(Color.lightGray);
 
         sideBarMenuList.addListSelectionListener(event -> {
-            ((CardLayout) (rightLoginSide.getLayout())).show(rightLoginSide,
+            ((CardLayout) (rightSidePanel.getLayout())).show(rightSidePanel,
                     sideBarMenuList.getSelectedValue().toString());
         });
 
@@ -87,50 +85,42 @@ public class AppPanel extends JPanel {
             MainLibrarySystem.getInstance().navigateToLogin();
         });
 
-        leftLoginSide.add(sideBarMenuList);
-        leftLoginSide.add(logoutBtn);
-
+        leftSidePanel.add(sideBarMenuList);
+        leftSidePanel.add(logoutBtn);
     }
 
     private void setRightAppSidePanel() {
-        rightLoginSide = new JPanel(new CardLayout());
-        rightLoginSide.setBackground(Color.gray);
+        rightSidePanel = new JPanel(new CardLayout());
+        rightSidePanel.setBackground(Color.WHITE);
 
         dashboard = DashboardWindow.INSTANCE;
-        addBookPanel = AddBookWindow.INSTANCE;
-        addMember = AddNewLibraryMemberWindow.INSTANCE;
-        addBookCopy = AddBookCopyWindow.INSTANCE;
-        AllMemberIds = AllMemberIdsWindow.INSTANCE;
-        AllBook = AllBookIdsWindow.INSTANCE;
-        checkOutBookWindow = CheckOutBookWindow.INSTANCE;
-        checkoutRecord = CheckoutRecordWindow.INSTANCE;
-        bookCopiesWindow = BookCopiesWindow.INSTANCE;
+        addMember = AddMemberWindow.INSTANCE;
+        addBookCopy = new JPanel(new CardLayout());
+        allMemberIds = AllMemberIdsWindow.INSTANCE;
+        allBook = new JPanel(new CardLayout());
+        checkOutBook = new JPanel(new CardLayout());
+        checkoutRecord = new JPanel(new CardLayout());
+        bookCopies = new JPanel(new CardLayout());
 
-        rightLoginSide.add(listMenu[0], dashboard);
-        rightLoginSide.add(listMenu[1], addMember);
-        rightLoginSide.add(listMenu[2], addBookPanel);
-        rightLoginSide.add(listMenu[3], addBookCopy);
-        rightLoginSide.add(listMenu[4], AllMemberIds);
-        rightLoginSide.add(listMenu[5], AllBook);
-        rightLoginSide.add(listMenu[6], checkOutBookWindow);
-        rightLoginSide.add(listMenu[7], checkoutRecord);
-        rightLoginSide.add(listMenu[8], bookCopiesWindow);
-
+        rightSidePanel.add(listMenu[0], dashboard);
+        rightSidePanel.add(listMenu[1], addMember);
+        rightSidePanel.add(listMenu[2], allMemberIds);
+        rightSidePanel.add(listMenu[3], addBookCopy);
+        rightSidePanel.add(listMenu[4], allBook);
+        rightSidePanel.add(listMenu[5], checkOutBook);
+        rightSidePanel.add(listMenu[6], checkoutRecord);
+        rightSidePanel.add(listMenu[7], bookCopies);
     }
 
     public void goToDashBoard() {
-        ((CardLayout) (rightLoginSide.getLayout())).show(rightLoginSide, listMenu[0]);
+        ((CardLayout) (rightSidePanel.getLayout())).show(rightSidePanel, listMenu[0]);
     }
 
     private void initComponents() {
-
         setRightAppSidePanel();
         setLeftAppSidePanel();
-
-        splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, leftLoginSide, rightLoginSide);
+        splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, leftSidePanel, rightSidePanel);
         splitPane.setDividerLocation(150);
-        // Add the SplitPane to the Pane
         add(splitPane, BorderLayout.CENTER);
-
     }
 }

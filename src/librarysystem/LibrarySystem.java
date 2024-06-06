@@ -2,7 +2,7 @@ package librarysystem;
 
 import business.ControllerInterface;
 import business.SystemController;
-import librarysystem.windows.AddNewLibraryMemberWindow;
+import librarysystem.windows.AddMemberWindow;
 import librarysystem.windows.AllBookIdsWindow;
 import librarysystem.windows.AllMemberIdsWindow;
 import librarysystem.windows.LoginWindow;
@@ -29,8 +29,7 @@ public class LibrarySystem extends JFrame implements LibWindow {
             LibrarySystem.INSTANCE,
             LoginWindow.INSTANCE,
             AllMemberIdsWindow.INSTANCE,
-            AllBookIdsWindow.INSTANCE,
-            AddNewLibraryMemberWindow.INSTANCE
+            AddMemberWindow.INSTANCE
     };
 
     public static void hideAllWindows() {
@@ -61,11 +60,7 @@ public class LibrarySystem extends JFrame implements LibWindow {
 
     private void setPathToImage() {
         String currDirectory = System.getProperty("user.dir");
-        //for Windows file system
-//    	pathToImage = currDirectory+"\\src\\librarysystem\\library.jpg";
-        //for unix file system
         pathToImage = currDirectory + "/src/librarysystem/library.jpg";
-
     }
 
     private void insertSplashImage() {
@@ -98,20 +93,16 @@ public class LibrarySystem extends JFrame implements LibWindow {
     }
 
     class LoginListener implements ActionListener {
-
         @Override
         public void actionPerformed(ActionEvent e) {
             LibrarySystem.hideAllWindows();
             LoginWindow.INSTANCE.init();
             Util.centerFrameOnDesktop(LoginWindow.INSTANCE);
             LoginWindow.INSTANCE.setVisible(true);
-
         }
-
     }
 
     class AllBookIdsListener implements ActionListener {
-
         @Override
         public void actionPerformed(ActionEvent e) {
             LibrarySystem.hideAllWindows();
@@ -129,20 +120,16 @@ public class LibrarySystem extends JFrame implements LibWindow {
             //AllBookIdsWindow.INSTANCE.setSize(660,500);
             Util.centerFrameOnDesktop(AllBookIdsWindow.INSTANCE);
             AllBookIdsWindow.INSTANCE.setVisible(true);
-
         }
-
     }
 
     class AllMemberIdsListener implements ActionListener {
-
         @Override
         public void actionPerformed(ActionEvent e) {
             LibrarySystem.hideAllWindows();
             AllMemberIdsWindow.INSTANCE.init();
             //AllMemberIdsWindow.INSTANCE.pack();
             AllMemberIdsWindow.INSTANCE.setVisible(true);
-
 
             LibrarySystem.hideAllWindows();
             AllBookIdsWindow.INSTANCE.init();
@@ -159,23 +146,16 @@ public class LibrarySystem extends JFrame implements LibWindow {
             //AllMemberIdsWindow.INSTANCE.setSize(660,500);
             Util.centerFrameOnDesktop(AllMemberIdsWindow.INSTANCE);
             AllMemberIdsWindow.INSTANCE.setVisible(true);
-
-
         }
-
     }
-
     class AddNewLibraryMember implements ActionListener {
-
         @Override
         public void actionPerformed(ActionEvent e) {
             LibrarySystem.hideAllWindows();
-            AddNewLibraryMemberWindow.INSTANCE.init();
-            Util.centerFrameOnDesktop(AddNewLibraryMemberWindow.INSTANCE);
-            AddNewLibraryMemberWindow.INSTANCE.setVisible(true);
-
+            AddMemberWindow.INSTANCE.init();
+            Util.centerFrameOnDesktop(AddMemberWindow.INSTANCE);
+            AddMemberWindow.INSTANCE.setVisible(true);
         }
-
     }
 
     @Override
@@ -187,7 +167,5 @@ public class LibrarySystem extends JFrame implements LibWindow {
     @Override
     public void isInitialized(boolean val) {
         isInitialized = val;
-
     }
-
 }

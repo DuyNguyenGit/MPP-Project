@@ -21,7 +21,6 @@ public class LoginWindow extends JPanel implements LibWindow {
     private JPanel upperHalf;
     private JPanel middleHalf;
     private JPanel lowerHalf;
-    private JPanel container;
 
     private JPanel topPanel;
     private JPanel middlePanel;
@@ -33,8 +32,6 @@ public class LoginWindow extends JPanel implements LibWindow {
     private JTextField password;
     private JLabel label;
     private JButton loginButton;
-    private JButton logoutButton;
-
 
     public boolean isInitialized() {
         return isInitialized;
@@ -42,12 +39,6 @@ public class LoginWindow extends JPanel implements LibWindow {
 
     public void isInitialized(boolean val) {
         isInitialized = val;
-    }
-
-    private JTextField messageBar = new JTextField();
-
-    public void clear() {
-        messageBar.setText("");
     }
 
     /* This class is a singleton */
@@ -69,7 +60,7 @@ public class LoginWindow extends JPanel implements LibWindow {
         mainPanel.add(lowerHalf, BorderLayout.SOUTH);
         add(mainPanel);
         isInitialized(true);
-        //setSize(660, 500);
+//        setSize(660, 500);
     }
 
     private void defineUpperHalf() {
@@ -113,7 +104,6 @@ public class LoginWindow extends JPanel implements LibWindow {
         intPanel.add(loginLabel, BorderLayout.CENTER);
         topPanel.setLayout(new FlowLayout(FlowLayout.LEFT));
         topPanel.add(intPanel);
-
     }
 
     private void defineMiddlePanel() {
@@ -151,7 +141,6 @@ public class LoginWindow extends JPanel implements LibWindow {
     }
 
     private void defineRightTextPanel() {
-
         JPanel topText = new JPanel();
         JPanel bottomText = new JPanel();
         topText.setLayout(new FlowLayout(FlowLayout.LEFT, 5, 0));

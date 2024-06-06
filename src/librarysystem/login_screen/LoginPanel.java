@@ -19,14 +19,13 @@ public class LoginPanel extends JPanel {
 
     private void setLeftLoginSidePanel() {
         leftLoginSide = new JPanel(new BorderLayout());
-        leftLoginSide.setBackground(Color.LIGHT_GRAY);
+        leftLoginSide.setBackground(Color.WHITE);
         String currDirectory = System.getProperty("user.dir");
         String pathToImage = currDirectory + "/src/librarysystem/library.jpg";
         ImageIcon image = new ImageIcon(pathToImage);
 
         JLabel icon = new JLabel(image);
         leftLoginSide.add(icon, BorderLayout.CENTER);
-
     }
 
     private void setRightLoginSidePanel() {
@@ -43,7 +42,5 @@ public class LoginPanel extends JPanel {
         splitPane.setDividerLocation(500);
         // Add the SplitPane to the Pane
         add(splitPane, BorderLayout.CENTER);
-
     }
-
 }

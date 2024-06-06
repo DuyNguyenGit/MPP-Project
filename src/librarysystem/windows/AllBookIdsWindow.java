@@ -3,11 +3,13 @@ package librarysystem.windows;
 import business.ControllerInterface;
 import business.SystemController;
 import librarysystem.LibWindow;
+import librarysystem.LibrarySystem;
 import librarysystem.Util;
 
 import javax.swing.*;
-import javax.swing.table.DefaultTableModel;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 
 public class AllBookIdsWindow extends JPanel implements LibWindow {
@@ -16,20 +18,16 @@ public class AllBookIdsWindow extends JPanel implements LibWindow {
 	ControllerInterface ci = new SystemController();
 	private boolean isInitialized = false;
 
-	public JPanel getMainPanel() {
-		return mainPanel;
-	}
-
 	private JPanel mainPanel;
 	private JPanel topPanel;
 	private JPanel middlePanel;
 	private JPanel lowerPanel;
-	private String[] columnNames = { "N", "ISBN", "Title", "Max Checkout Day","Copies"};
-	private JTable table;
+	private TextArea textArea;
 
+
+	//Singleton class
 	private AllBookIdsWindow() {
 		super(new BorderLayout());
-		init();
 	}
 
 	public void init() {
@@ -42,12 +40,12 @@ public class AllBookIdsWindow extends JPanel implements LibWindow {
 		mainPanel.add(middlePanel, BorderLayout.CENTER);
 		mainPanel.add(lowerPanel, BorderLayout.SOUTH);
 		add(mainPanel);
-		isInitialized = true;
+		isInitialized(true);
 	}
 
 	public void defineTopPanel() {
 		topPanel = new JPanel();
-		JLabel AllIDsLabel = new JLabel("All Books");
+		JLabel AllIDsLabel = new JLabel("All Book IDs");
 		Util.adjustLabelFont(AllIDsLabel, Util.DARK_BLUE, true);
 		topPanel.setLayout(new FlowLayout(FlowLayout.CENTER));
 		topPanel.add(AllIDsLabel);
@@ -55,44 +53,51 @@ public class AllBookIdsWindow extends JPanel implements LibWindow {
 
 	public void defineMiddlePanel() {
 		middlePanel = new JPanel();
-		String[][] data = SystemController.allBooks();
+		FlowLayout fl = new FlowLayout(FlowLayout.CENTER, 25, 25);
+		middlePanel.setLayout(fl);
+		textArea = new TextArea(8, 20);
+		//populateTextArea();
+		middlePanel.add(textArea);
 
-		table = new JTable(new DefaultTableModel(data, columnNames));
-		table. getColumnModel().getColumn(0).setPreferredWidth(20);
-		table.setEnabled(false);
-		table.setBounds(30, 40, 200, 200);
-
-		// adding it to JScrollPane
-		JScrollPane sp = new JScrollPane(table);
-		middlePanel.add(sp);
-	}
-
-	public void reloadBooks() {
-		String[][] data = SystemController.allBooks();
-		DefaultTableModel defaultTableModel = (DefaultTableModel) table.getModel();
-		// Clear All
-		for (int i = 0; i < data.length; i++) {
-		}
-		for (int i = table.getRowCount() - 1; i > -1; i--) {
-			defaultTableModel.removeRow(i);
-	    }
-		// Add All
-		for (int i = 0; i < data.length; i++) {
-			defaultTableModel.insertRow(i, data[i]);
-		}
 	}
 
 	public void defineLowerPanel() {
+
+		JButton backToMainButn = new JButton("<= Back to Main");
+		backToMainButn.addActionListener(new BackToMainListener());
 		lowerPanel = new JPanel();
-		FlowLayout fl = new FlowLayout(FlowLayout.LEFT);
-		lowerPanel.setLayout(fl);
-		JButton backButton = new JButton("<== Back to Main");
-		lowerPanel.setVisible(false);
+		lowerPanel.setLayout(new FlowLayout(FlowLayout.LEFT));
+		;
+		lowerPanel.add(backToMainButn);
 	}
+
+	class BackToMainListener implements ActionListener {
+		@Override
+		public void actionPerformed(ActionEvent evt) {
+			LibrarySystem.hideAllWindows();
+			LibrarySystem.INSTANCE.setVisible(true);
+
+		}
+	}
+
+	public void setData(String data) {
+		textArea.setText(data);
+	}
+
+//	private void populateTextArea() {
+//		//populate
+//		List<String> ids = ci.allBookIds();
+//		Collections.sort(ids);
+//		StringBuilder sb = new StringBuilder();
+//		for(String s: ids) {
+//			sb.append(s + "\n");
+//		}
+//		textArea.setText(sb.toString());
+//	}
 
 	@Override
 	public boolean isInitialized() {
-
+		// TODO Auto-generated method stub
 		return isInitialized;
 	}
 
