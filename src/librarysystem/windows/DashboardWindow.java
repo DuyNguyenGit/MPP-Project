@@ -25,7 +25,7 @@ public class DashboardWindow extends JPanel {
 
     private void setProfilePicture() {
         String currDirectory = System.getProperty("user.dir");
-        String pathToImage = currDirectory + "/src/librarysystem/home.jpg";
+        String pathToImage = currDirectory + "/src/librarysystem/library.jpg";
         ImageIcon image = new ImageIcon(pathToImage);
 
         JLabel icon = new JLabel(image);
