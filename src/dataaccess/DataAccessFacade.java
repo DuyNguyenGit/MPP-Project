@@ -22,20 +22,13 @@ public class DataAccessFacade implements DataAccess {
 		BOOKS, MEMBERS, USERS, CHECKOUTRECORD;
 	}
 
-	public static final String OUTPUT_DIR = System.getProperty("user.dir") + "/src/dataaccess/storage"; // for Unix file
-																										// system
-//			+ "\\src\\dataaccess\\storage"; //for Windows file system
-	public static final String DATE_PATTERN = "MM/dd/yyyy";
+    enum StorageType {
+        BOOKS, MEMBERS, USERS, CURRENT_USER;
+    }
 
-	// implement: other save operations
-	public void saveNewMember(LibraryMember member) {
-		HashMap<String, LibraryMember> mems = readMemberMap();
-		if (mems != null) {
-			String memberId = member.getMemberId();
-			mems.put(memberId, member);
-			saveToStorage(StorageType.MEMBERS, mems);
-		}
-	}
+    public static final String OUTPUT_DIR = System.getProperty("user.dir")
+            + "/src/dataaccess/storage";
+    public static final String DATE_PATTERN = "MM/dd/yyyy";
 
 	public HashMap<String, CheckoutRecord> saveNewCheckoutRecord(CheckoutRecord checkoutRecord) {
 		HashMap<String, CheckoutRecord> checkoutRecordHashMap = readCheckoutRecordMap();
@@ -75,48 +68,75 @@ public class DataAccessFacade implements DataAccess {
 		return (HashMap<String,CheckoutRecord>) readFromStorage(StorageType.CHECKOUTRECORD);
 	}
 
-	@SuppressWarnings("unchecked")
-	public HashMap<String, Book> readBooksMap() {
-		// Returns a Map with name/value pairs being
-		// isbn -> Book
-		return (HashMap<String, Book>) readFromStorage(StorageType.BOOKS);
-	}
+    public void saveCurrentUser(User user) {
+        HashMap<String, User> currentUser = new HashMap<>();
+        if (user != null) {
+            String userId = user.getId();
+            currentUser.put(userId, user);
+        }
+        saveToStorage(StorageType.CURRENT_USER, currentUser);
+    }
 
-	@SuppressWarnings("unchecked")
-	public HashMap<String, LibraryMember> readMemberMap() {
-		// Returns a Map with name/value pairs being
-		// memberId -> LibraryMember
-		return (HashMap<String, LibraryMember>) readFromStorage(StorageType.MEMBERS);
-	}
+    public User getCurrentUser() {
+        HashMap<String, User> currentUser = readCurrentUserMap();
+        if (currentUser != null && !currentUser.isEmpty()) {
+            return currentUser.values().iterator().next();
+        }
+        return null;
+    }
 	
 	
-	@SuppressWarnings("unchecked")
-	public HashMap<String, User> readUserMap() {
-		// Returns a Map with name/value pairs being
-		// userId -> User
-		return (HashMap<String, User>) readFromStorage(StorageType.USERS);
-	}
+    /**
+     * read all books
+     *
+     * @return Map<String, Book>
+     */
+    @Override
+    @SuppressWarnings("unchecked")
+    public HashMap<String, Book> readBooksMap() {
+        //Returns a Map with name/value pairs being
+        //   isbn -> Book
+        return (HashMap<String, Book>) readFromStorage(StorageType.BOOKS);
+    }
 
-	///// load methods - these place test data into the storage area
-	///// - used just once at startup
+    /**
+     * read current user
+     *
+     * @return Map<String, User>
+     */
+    @Override
+    @SuppressWarnings("unchecked")
+    public HashMap<String, User> readCurrentUserMap() {
+        return (HashMap<String, User>) readFromStorage(StorageType.CURRENT_USER);
+    }
 
-	static void loadBookMap(List<Book> bookList) {
-		HashMap<String, Book> books = new HashMap<String, Book>();
-		bookList.forEach(book -> books.put(book.getIsbn(), book));
-		saveToStorage(StorageType.BOOKS, books);
-	}
+    /**
+     * read all members
+     *
+     * @return Map<String, Book>
+     */
+    @Override
+    @SuppressWarnings("unchecked")
+    public HashMap<String, LibraryMember> readMemberMap() {
+        //Returns a Map with name/value pairs being
+        //   memberId -> LibraryMember
+        return (HashMap<String, LibraryMember>) readFromStorage(
+                StorageType.MEMBERS);
+    }
 
-	static void loadUserMap(List<User> userList) {
-		HashMap<String, User> users = new HashMap<String, User>();
-		userList.forEach(user -> users.put(user.getId(), user));
-		saveToStorage(StorageType.USERS, users);
-	}
+    /**
+     * read all users
+     *
+     * @return Map<String, Book>
+     */
+    @Override
+    @SuppressWarnings("unchecked")
+    public HashMap<String, User> readUserMap() {
+        //Returns a Map with name/value pairs being
+        //   userId -> User
+        return (HashMap<String, User>) readFromStorage(StorageType.USERS);
+    }
 
-	static void loadMemberMap(List<LibraryMember> memberList) {
-		HashMap<String, LibraryMember> members = new HashMap<String, LibraryMember>();
-		memberList.forEach(member -> members.put(member.getMemberId(), member));
-		saveToStorage(StorageType.MEMBERS, members);
-	}
 
 	static void saveToStorage(StorageType type, HashMap<? extends String, ? extends Serializable> ob) {
 		ObjectOutputStream out = null;
@@ -156,40 +176,88 @@ public class DataAccessFacade implements DataAccess {
 		return retVal;
 	}
 
-	final static class Pair<S, T> implements Serializable {
+    static void loadUserMap(List<dataaccess.User> userList) {
+        HashMap<String, dataaccess.User> users = new HashMap<String, User>();
+        userList.forEach(user -> users.put(user.getId(), user));
+        saveToStorage(StorageType.USERS, users);
+    }
 
-		S first;
-		T second;
+    static void loadMemberMap(List<LibraryMember> memberList) {
+        HashMap<String, LibraryMember> members = new HashMap<String, LibraryMember>();
+        memberList.forEach(member -> members.put(member.getMemberId(), member));
+        saveToStorage(StorageType.MEMBERS, members);
+    }
 
-		Pair(S s, T t) {
-			first = s;
-			second = t;
-		}
+    static void saveToStorage(StorageType type, Object ob) {
+        ObjectOutputStream out = null;
+        try {
+            Path path = FileSystems.getDefault().getPath(OUTPUT_DIR, type.toString());
+            out = new ObjectOutputStream(Files.newOutputStream(path));
+            out.writeObject(ob);
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            if (out != null) {
+                try {
+                    out.close();
+                } catch (Exception e) {
+                }
+            }
+        }
+    }
 
-		@Override
-		public boolean equals(Object ob) {
-			if (ob == null)
-				return false;
-			if (this == ob)
-				return true;
-			if (ob.getClass() != getClass())
-				return false;
-			@SuppressWarnings("unchecked")
-			Pair<S, T> p = (Pair<S, T>) ob;
-			return p.first.equals(first) && p.second.equals(second);
-		}
+    static Object readFromStorage(StorageType type) {
+        ObjectInputStream in = null;
+        Object retVal = null;
+        try {
+            Path path = FileSystems.getDefault().getPath(OUTPUT_DIR, type.toString());
+            in = new ObjectInputStream(Files.newInputStream(path));
+            retVal = in.readObject();
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (in != null) {
+                try {
+                    in.close();
+                } catch (Exception e) {
+                }
+            }
+        }
+        return retVal;
+    }
 
-		@Override
-		public int hashCode() {
-			return first.hashCode() + 5 * second.hashCode();
-		}
 
-		@Override
-		public String toString() {
-			return "(" + first.toString() + ", " + second.toString() + ")";
-		}
+    final static class Pair<S, T> implements Serializable {
 
-		private static final long serialVersionUID = 5399827794066637059L;
-	}
+        S first;
+        T second;
+
+        Pair(S s, T t) {
+            first = s;
+            second = t;
+        }
+
+        @Override
+        public boolean equals(Object ob) {
+            if (ob == null) return false;
+            if (this == ob) return true;
+            if (ob.getClass() != getClass()) return false;
+            @SuppressWarnings("unchecked")
+            Pair<S, T> p = (Pair<S, T>) ob;
+            return p.first.equals(first) && p.second.equals(second);
+        }
+
+        @Override
+        public int hashCode() {
+            return first.hashCode() + 5 * second.hashCode();
+        }
+
+        @Override
+        public String toString() {
+            return "(" + first.toString() + ", " + second.toString() + ")";
+        }
+
+        private static final long serialVersionUID = 5399827794066637059L;
+    }
 
 }
