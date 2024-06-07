@@ -2,6 +2,8 @@ package librarysystem.table;
 
 import business.CheckoutRecord;
 import business.SystemController;
+import librarysystem.LibWindow;
+import librarysystem.Util;
 
 import javax.swing.*;
 import javax.swing.table.TableColumn;
@@ -10,17 +12,20 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 
-public class TableExample extends JFrame {
+public class TableExample extends JPanel implements LibWindow {
+	public static final TableExample INSTANCE = new TableExample();
 	private JPanel topPanel; //panel containing table
 	private JPanel middlePanel;
 	private JTable table;
 	private JScrollPane scrollPane;
 	private CustomTableModel model;
 	private JLabel label;
-	private List<CheckoutRecord> checkoutRecord;
+	private static List<CheckoutRecord> checkoutRecord;
+	private SystemController systemController;
 	
 	//table data and config
 	private final String[] DEFAULT_COLUMN_HEADERS 
@@ -35,7 +40,7 @@ public class TableExample extends JFrame {
     private final float [] COL_WIDTH_PROPORTIONS =
     	{0.14f, 0.14f, 0.14f, 0.12f, 0.15f, 0.17f, 0.14f};//{.75f, .25f}
     
-	public TableExample(List<CheckoutRecord> checkoutRecord) {
+	public TableExample() {
 		initializeWindow();
 		JPanel mainPanel = new JPanel();
 		defineTopPanel();
@@ -43,8 +48,15 @@ public class TableExample extends JFrame {
 		mainPanel.setLayout(new BorderLayout());
 		mainPanel.add(topPanel, BorderLayout.NORTH);
 		mainPanel.add(middlePanel, BorderLayout.CENTER);
-		getContentPane().add(mainPanel);
-		this.checkoutRecord = checkoutRecord;
+		add(mainPanel);
+		loadCheckoutRecord();
+	}
+	public void loadCheckoutRecord() {
+		systemController = new SystemController();
+		this.checkoutRecord = systemController.loadCheckoutRecord();
+		setTableValues();
+		getTable().updateUI();
+		setVisible(true);
 	}
 
 	public JTable getTable() {
@@ -56,11 +68,11 @@ public class TableExample extends JFrame {
 	}
 
 	private void initializeWindow() {
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setTitle("Table Example");
+		JLabel checkoutRecordTitle = new JLabel("Checkout Record");
+		Util.adjustLabelFont(checkoutRecordTitle, Color.BLUE.darker(), true);
+		add(checkoutRecordTitle, BorderLayout.NORTH);
 		centerFrameOnDesktop(this);
-		setSize(FRAME_WIDTH,FRAME_HEIGHT); 
-		setResizable(false);
+		setSize(FRAME_WIDTH,FRAME_HEIGHT);
 	}
 	
 	public static void centerFrameOnDesktop(Component f) {
@@ -124,13 +136,9 @@ public class TableExample extends JFrame {
 //			table.updateUI();
 //		}
 //	}
-	public void setValues(CustomTableModel model) {
+	public void setTableValues() {
 		List<String[]> data = new ArrayList<>();
-
-
-		//for (int i = this.checkoutRecord.size()-1; i >= 0; i--) {
-			for (CheckoutRecord c : this.checkoutRecord) {
-//			CheckoutRecord c = this.checkoutRecord.get(i);
+		for (CheckoutRecord c : this.checkoutRecord) {
 			String memberId = c.getLibraryMember().getMemberId();
 			String firstName = c.getLibraryMember().getFirstName();
 			String lastName = c.getLibraryMember().getLastName();
@@ -143,10 +151,8 @@ public class TableExample extends JFrame {
 
 			data.add(row);
 		}
-		for (CheckoutRecord c : this.checkoutRecord) {
 
-		}
-
+		model.resetTableValues();
 		model.setTableValues(data);	
 	}
 	
@@ -161,4 +167,19 @@ public class TableExample extends JFrame {
 //	}
 	
 	private static final long serialVersionUID = 3618976789175941431L;
+
+	@Override
+	public void init() {
+
+	}
+
+	@Override
+	public boolean isInitialized() {
+		return false;
+	}
+
+	@Override
+	public void isInitialized(boolean val) {
+
+	}
 }

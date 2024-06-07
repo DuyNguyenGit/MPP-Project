@@ -39,6 +39,10 @@ class CustomTableModel extends AbstractTableModel {
         tableValues = Arrays.asList(vals);
     }
 
+    public void resetTableValues() {
+        tableValues = new ArrayList<>();
+    }
+
     public void setTableValues(List<String[]> vals) {
     	if(vals == null) {
     		return;

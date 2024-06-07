@@ -3,6 +3,7 @@ package librarysystem.app_main;
 import business.SystemController;
 import dataaccess.Auth;
 import librarysystem.MainLibrarySystem;
+import librarysystem.table.TableExample;
 import librarysystem.windows.AddMemberWindow;
 import librarysystem.windows.AllMemberIdsWindow;
 import librarysystem.windows.CheckoutFormWindow;
@@ -100,7 +101,7 @@ public class AppPanel extends JPanel {
         allMemberIds = AllMemberIdsWindow.INSTANCE;
         allBook = new JPanel(new CardLayout());
         checkOutBook = CheckoutFormWindow.INSTANCE;
-        checkoutRecord = new JPanel(new CardLayout());
+        checkoutRecord = TableExample.INSTANCE;
         bookCopies = new JPanel(new CardLayout());
 
         rightSidePanel.add(listMenu[0], dashboard);
@@ -116,7 +117,10 @@ public class AppPanel extends JPanel {
     public void goToDashBoard() {
         ((CardLayout) (rightSidePanel.getLayout())).show(rightSidePanel, listMenu[0]);
     }
-
+    public void goToCheckoutRecord() {
+        ((CardLayout) (rightSidePanel.getLayout())).show(rightSidePanel, listMenu[6]);
+        sideBarMenuList.setSelectedIndex(6);
+    }
     private void initComponents() {
         setRightAppSidePanel();
         setLeftAppSidePanel();

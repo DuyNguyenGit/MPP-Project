@@ -37,12 +37,12 @@ public class DataAccessFacade implements DataAccess {
 		}
 	}
 
-	public HashMap<String, CheckoutRecord> saveNewCheckoutRecord(CheckoutRecord checkoutRecord) {
+	public HashMap<String, CheckoutRecord> saveNewCheckoutRecord(CheckoutRecord checkoutRecord, int copyNum) {
 		HashMap<String, CheckoutRecord> checkoutRecordHashMap = readCheckoutRecordMap();
 		if(checkoutRecordHashMap == null){
 			checkoutRecordHashMap = new HashMap<>();
 		}
-		String memberId = checkoutRecord.getLibraryMember().getMemberId();
+		String memberId = checkoutRecord.getLibraryMember().getMemberId() + copyNum;
 		checkoutRecordHashMap.put(memberId, checkoutRecord);
 		saveToStorage(StorageType.CHECKOUTRECORD, checkoutRecordHashMap);
 		return checkoutRecordHashMap;

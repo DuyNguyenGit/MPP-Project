@@ -6,9 +6,12 @@ import dataaccess.DataAccessFacade;
 import dataaccess.User;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class SystemController implements ControllerInterface {
 	public static Auth currentAuth = null;
@@ -59,14 +62,16 @@ public class SystemController implements ControllerInterface {
 		BookCopy checkoutBookCopy = checkAvailableBookCopy(bookMap, isbn);
 
 		LibraryMember libraryMember = memberMap.get(memberId);
+		LocalDateTime dateTime = LocalDateTime.now();
 		LocalDate checkoutDate = LocalDate.now();
 		LocalDate dueDate = checkoutDate.plusDays(bookMap.get(isbn).getMaxCheckoutLength());
 
 		CheckoutRecordEntry checkoutRecordEntry = new CheckoutRecordEntry(checkoutDate, dueDate, checkoutBookCopy);
-		CheckoutRecord checkoutRecord = new CheckoutRecord(libraryMember,checkoutRecordEntry);
+		CheckoutRecord checkoutRecord = new CheckoutRecord(libraryMember,checkoutRecordEntry,dateTime);
 		da.updateBookCopyAvailability(isbn, checkoutBookCopy);
 
-		HashMap<String, CheckoutRecord> checkoutRecordHashMap = da.saveNewCheckoutRecord(checkoutRecord);
+		HashMap<String, CheckoutRecord> checkoutRecordHashMap = da.saveNewCheckoutRecord(checkoutRecord,
+				checkoutBookCopy.getCopyNum());
 		List<CheckoutRecord> checkoutRecords = checkoutRecordHashMap.values().stream().toList();
 
 		return checkoutRecords;
@@ -75,11 +80,23 @@ public class SystemController implements ControllerInterface {
 	private BookCopy checkAvailableBookCopy(HashMap<String, Book> bookMap, String isbn) throws LibrarySystemException {
 		BookCopy[] bookCopies = bookMap.get(isbn).getCopies();
         for (BookCopy bookCopy : bookCopies) {
-            if (bookCopy.getAvailableBookCopies()) {
+            if (bookCopy.getAvailableBookCopies() ) {
                 return bookCopy;
             }
         }
 		throw new LibrarySystemException("This book is out of copies");
+	}
+
+	@Override
+	public List<CheckoutRecord> loadCheckoutRecord() {
+		HashMap<String, CheckoutRecord> checkoutRecordHashMap = dataAccess.readCheckoutRecordMap();
+		if(checkoutRecordHashMap == null){
+			checkoutRecordHashMap = new HashMap<>();
+		}
+		List<CheckoutRecord> sortedRecords = checkoutRecordHashMap.values().stream()
+				.sorted(Comparator.comparing(CheckoutRecord::getDateTime))
+				.collect(Collectors.toList());
+		return sortedRecords;
 	}
 
 	public static String[][] allMembers() {

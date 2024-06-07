@@ -14,6 +14,6 @@ public interface DataAccess {
 	LibraryMember searchMember(String memberId);
 	public HashMap<String, CheckoutRecord> readCheckoutRecordMap();
 	public void saveNewMember(LibraryMember member);
-	public HashMap<String, CheckoutRecord> saveNewCheckoutRecord(CheckoutRecord checkoutRecordHashMap);
+	public HashMap<String, CheckoutRecord> saveNewCheckoutRecord(CheckoutRecord checkoutRecordHashMap, int isbn);
 	public void updateBookCopyAvailability(String isbn, BookCopy checkoutBookCopy);
 }
