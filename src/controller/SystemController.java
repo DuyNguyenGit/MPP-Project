@@ -137,6 +137,34 @@ public class SystemController implements ControllerInterface {
         return results;
     }
 
+    public static String[][] allBooks() {
+        DataAccess da = new DataAccessFacade();
+        List<Book> retval = new ArrayList<>();
+        retval.addAll(da.readBooksMap().values());
+        String[][] results = new String[retval.size()][5];
+        int i = 0;
+        for (Book lb : retval) {
+            String[] value = new String[5];
+            value[0] = (i + 1) + "";
+            value[1] = lb.getIsbn();
+            value[2] = lb.getTitle();
+            StringBuilder authors = new StringBuilder();
+            lb.getAuthors().forEach(e -> {
+                authors.append(e.getFirstName()).append(" ").append(e.getLastName()).append(", ");
+            });
+            int bookCopy = 0;
+            for(BookCopy e: lb.getCopies()){
+                if(e.getAvailableBookCopies()) bookCopy++;
+            }
+            value[3] = !authors.isEmpty() ? authors.toString().substring(0, authors.length() - 2) : "";
+            value[4] = String.valueOf(bookCopy);
+            results[i] = value;
+            i++;
+        }
+
+        return results;
+    }
+
     @Override
     public void addNewLibraryMember(String fname, String lname, String mId, String tel, String street, String city,
                                     String state,

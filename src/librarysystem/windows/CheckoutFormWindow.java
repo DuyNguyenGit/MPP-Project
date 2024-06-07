@@ -190,4 +190,9 @@ public class CheckoutFormWindow extends JPanel implements LibWindow {
             }
         });
     }
+
+    public void clearFields() {
+        memberIdField.setText("");
+        isbnField.setText("");
+    }
 }

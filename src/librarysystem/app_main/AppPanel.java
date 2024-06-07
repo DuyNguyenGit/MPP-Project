@@ -71,6 +71,12 @@ public class AppPanel extends JPanel {
                AddBookCopyWindow.INSTANCE.clearFields();
                AddBookCopyWindow.INSTANCE.clearTable();
            }
+            if(sideBarComponent.equals(listMenu[5])) {
+                CheckoutFormWindow.INSTANCE.clearFields();
+            }
+            if(sideBarComponent.equals(listMenu[4])) {
+                AllBookIdsWindow.INSTANCE.reloadBook();
+            }
            ((CardLayout) (rightSidePanel.getLayout())).show(rightSidePanel,
                     sideBarComponent);
         });
