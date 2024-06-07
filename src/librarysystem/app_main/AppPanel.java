@@ -23,9 +23,8 @@ public class AppPanel extends JPanel {
     private JPanel dashboard, addMember, allMemberIds, addBookCopy, allBook, checkOutBook, checkoutRecord;
 
     private String[] listMenu = {"Library", "Add Member", "Members", "Add Book Copy", "Books",
-            "CheckOut Book", "CheckOut Record", "Copies"};
-    private String[] listAdminMenu = {"Library", "Add Member", "Add Book", "Add Book Copy", "Members", "Books",
-            "Copies"};
+            "CheckOut Book", "CheckOut Record"};
+    private String[] listAdminMenu = {"Library", "Add Member", "Add Book", "Add Book Copy", "Members", "Books"};
     private String[] listLibrarianMenu = {"Library", "CheckOut Book", "CheckOut Record"};
 
     private AppPanel() {
