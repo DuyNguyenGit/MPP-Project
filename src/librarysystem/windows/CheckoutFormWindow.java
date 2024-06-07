@@ -1,18 +1,15 @@
 package librarysystem.windows;
 
-import business.CheckoutRecord;
 import controller.ControllerInterface;
 import controller.SystemController;
 import librarysystem.LibWindow;
 import librarysystem.LibrarySystem;
-import librarysystem.Util;
 import librarysystem.app_main.AppPanel;
 import librarysystem.table.TableExample;
 import utils.Util;
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.List;
 
 public class CheckoutFormWindow extends JPanel implements LibWindow {
     public static final CheckoutFormWindow INSTANCE = new CheckoutFormWindow();

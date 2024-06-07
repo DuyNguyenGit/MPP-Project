@@ -12,13 +12,11 @@ import service.impl.BookService;
 import utils.Util;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Optional;
+import java.time.LocalDateTime;
+import java.util.*;
+import java.util.stream.Collectors;
 
 public class SystemController implements ControllerInterface {
-
     public static Auth currentAuth = null;
 
     private DataAccess dataAccess = new DataAccessFacade();
@@ -26,17 +24,16 @@ public class SystemController implements ControllerInterface {
     public void login(String id, String password) throws LoginException {
         DataAccess da = new DataAccessFacade();
         HashMap<String, User> map = da.readUserMap();
-        if (!map.containsKey(id)) {
+        if(!map.containsKey(id)) {
             throw new LoginException("ID " + id + " not found");
         }
         String passwordFound = map.get(id).getPassword();
-        if (!passwordFound.equals(password)) {
+        if(!passwordFound.equals(password)) {
             throw new LoginException("Password incorrect");
         }
         currentAuth = map.get(id).getAuthorization();
 
     }
-
     @Override
     public List<String> allMemberIds() {
         DataAccess da = new DataAccessFacade();
@@ -54,28 +51,45 @@ public class SystemController implements ControllerInterface {
     }
 
     @Override
+    public Book addNewBookCopy(String isbn) throws LibrarySystemException {
+        if (Util.isEmpty(isbn)) {
+            throw new LibrarySystemException("ISBN must be not empty");
+        }
+
+        IBookService bookService = new BookService();
+        Optional<Book> bookOpt = bookService.searchBookByIsbn(isbn);
+        if (bookOpt.isEmpty()) {
+            throw new LibrarySystemException("Book not found, please enter correct ISBN");
+        }
+
+        return bookService.saveNewBookCopy(bookOpt.get());
+    }
+
+    @Override
     public List<CheckoutRecord> checkoutForm(String memberId, String isbn) throws Exception {
         DataAccess da = new DataAccessFacade();
         HashMap<String, LibraryMember> memberMap = da.readMemberMap();
         HashMap<String, Book> bookMap = da.readBooksMap();
-        if (!memberMap.containsKey(memberId)) {
+        if(!memberMap.containsKey(memberId)) {
             throw new LibrarySystemException("Member id with " + memberId + " is not found");
         }
-        if (!bookMap.containsKey(isbn) || bookMap.get(isbn).getCopies() == null) {
+        if(!bookMap.containsKey(isbn) || bookMap.get(isbn).getCopies() == null) {
             throw new LibrarySystemException("This book is not available");
         }
 
         BookCopy checkoutBookCopy = checkAvailableBookCopy(bookMap, isbn);
 
         LibraryMember libraryMember = memberMap.get(memberId);
+        LocalDateTime dateTime = LocalDateTime.now();
         LocalDate checkoutDate = LocalDate.now();
         LocalDate dueDate = checkoutDate.plusDays(bookMap.get(isbn).getMaxCheckoutLength());
 
         CheckoutRecordEntry checkoutRecordEntry = new CheckoutRecordEntry(checkoutDate, dueDate, checkoutBookCopy);
-        CheckoutRecord checkoutRecord = new CheckoutRecord(libraryMember, checkoutRecordEntry);
+        CheckoutRecord checkoutRecord = new CheckoutRecord(libraryMember,checkoutRecordEntry,dateTime);
         da.updateBookCopyAvailability(isbn, checkoutBookCopy);
 
-        HashMap<String, CheckoutRecord> checkoutRecordHashMap = da.saveNewCheckoutRecord(checkoutRecord);
+        HashMap<String, CheckoutRecord> checkoutRecordHashMap = da.saveNewCheckoutRecord(checkoutRecord,
+                checkoutBookCopy.getCopyNum());
         List<CheckoutRecord> checkoutRecords = checkoutRecordHashMap.values().stream().toList();
 
         return checkoutRecords;
@@ -84,11 +98,23 @@ public class SystemController implements ControllerInterface {
     private BookCopy checkAvailableBookCopy(HashMap<String, Book> bookMap, String isbn) throws LibrarySystemException {
         BookCopy[] bookCopies = bookMap.get(isbn).getCopies();
         for (BookCopy bookCopy : bookCopies) {
-            if (bookCopy.getAvailableBookCopies()) {
+            if (bookCopy.getAvailableBookCopies() ) {
                 return bookCopy;
             }
         }
         throw new LibrarySystemException("This book is out of copies");
+    }
+
+    @Override
+    public List<CheckoutRecord> loadCheckoutRecord() {
+        HashMap<String, CheckoutRecord> checkoutRecordHashMap = dataAccess.readCheckoutRecordMap();
+        if(checkoutRecordHashMap == null){
+            checkoutRecordHashMap = new HashMap<>();
+        }
+        List<CheckoutRecord> sortedRecords = checkoutRecordHashMap.values().stream()
+                .sorted(Comparator.comparing(CheckoutRecord::getDateTime))
+                .collect(Collectors.toList());
+        return sortedRecords;
     }
 
     public static String[][] allMembers() {
@@ -151,20 +177,5 @@ public class SystemController implements ControllerInterface {
         DataAccess da = new DataAccessFacade();
         da.saveNewMember(member);
 
-    }
-
-    @Override
-    public Book addNewBookCopy(String isbn) throws LibrarySystemException {
-        if (Util.isEmpty(isbn)) {
-            throw new LibrarySystemException("ISBN must be not empty");
-        }
-
-        IBookService bookService = new BookService();
-        Optional<Book> bookOpt = bookService.searchBookByIsbn(isbn);
-        if (bookOpt.isEmpty()) {
-            throw new LibrarySystemException("Book not found, please enter correct ISBN");
-        }
-
-        return bookService.saveNewBookCopy(bookOpt.get());
     }
 }

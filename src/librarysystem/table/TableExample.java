@@ -1,17 +1,15 @@
 package librarysystem.table;
 
 import business.CheckoutRecord;
-import business.SystemController;
+import controller.SystemController;
 import librarysystem.LibWindow;
-import librarysystem.Util;
+import utils.Util;
 
 import javax.swing.*;
 import javax.swing.table.TableColumn;
 import java.awt.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.Date;
 import java.util.List;
 
 public class TableExample extends JPanel implements LibWindow {
@@ -164,8 +162,6 @@ public class TableExample extends JPanel implements LibWindow {
 //			}
 //		});
 //	}
-	
-	private static final long serialVersionUID = 3618976789175941431L;
 
 	@Override
 	public void init() {

@@ -14,7 +14,7 @@ public class CheckoutRecord implements Serializable {
     private List<Fine> fineList = new ArrayList<>();
     private LocalDateTime dateTime;
 
-    CheckoutRecord(LibraryMember libraryMember, CheckoutRecordEntry RecordEntry, LocalDateTime dateTime){
+    public CheckoutRecord(LibraryMember libraryMember, CheckoutRecordEntry RecordEntry, LocalDateTime dateTime){
         this.libraryMember = libraryMember;
         this.checkoutRecordEntryList.add(RecordEntry);
         this.dateTime = dateTime;
