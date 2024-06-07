@@ -11,7 +11,6 @@ public class CheckoutRecord implements Serializable {
     private static final long serialVersionUID = -728095373785964854L;
     private LibraryMember libraryMember;
     private List<CheckoutRecordEntry> checkoutRecordEntryList = new ArrayList<>();
-    private List<Fine> fineList = new ArrayList<>();
     private LocalDateTime dateTime;
 
     public CheckoutRecord(LibraryMember libraryMember, CheckoutRecordEntry RecordEntry, LocalDateTime dateTime){

@@ -102,9 +102,9 @@ public class CheckoutFormWindow extends JPanel implements LibWindow {
         lowerHalf = new JPanel();
         lowerHalf.setLayout(new FlowLayout(FlowLayout.LEFT));
 
-        JButton backButton = new JButton("Back to Main");
-        addBackButtonListener(backButton);
-        lowerHalf.add(backButton);
+//        JButton backButton = new JButton("Back to Main");
+//        addBackButtonListener(backButton);
+//        lowerHalf.add(backButton);
 
     }
 
@@ -173,13 +173,6 @@ public class CheckoutFormWindow extends JPanel implements LibWindow {
         rightTextPanel.setLayout(new BorderLayout());
         rightTextPanel.add(topText, BorderLayout.NORTH);
         rightTextPanel.add(bottomText, BorderLayout.CENTER);
-    }
-
-    private void addBackButtonListener(JButton butn) {
-        butn.addActionListener(evt -> {
-            LibrarySystem.hideAllWindows();
-            LibrarySystem.INSTANCE.setVisible(true);
-        });
     }
 
     private void addSearchButtonListener(JButton butn) {

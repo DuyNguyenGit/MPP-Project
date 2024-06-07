@@ -87,7 +87,7 @@ public class AddBookCopyWindow extends JPanel implements LibWindow {
         return isbnTxtField.getText().trim();
     }
 
-    private void clearFields() {
+    public void clearFields() {
         isbnTxtField.setText("");
     }
 
@@ -103,9 +103,7 @@ public class AddBookCopyWindow extends JPanel implements LibWindow {
     }
 
     private void populateTableData(Book book) {
-        DefaultTableModel defaultTableModel = (DefaultTableModel) bookCopyTable.getModel();
-        defaultTableModel.getDataVector().removeAllElements();
-
+        DefaultTableModel defaultTableModel = clearTable();
         int no = 0;
         for (int i = book.getCopies().length - 1; i >= 0; i--) {
             no++;
@@ -119,7 +117,17 @@ public class AddBookCopyWindow extends JPanel implements LibWindow {
         bookCopyTable.updateUI();
     }
 
+    public DefaultTableModel clearTable() {
+        DefaultTableModel defaultTableModel = (DefaultTableModel) bookCopyTable.getModel();
+        defaultTableModel.getDataVector().removeAllElements();
+        return defaultTableModel;
+    }
+
     private void setFirstRowColor() {
         bookCopyTable.setDefaultRenderer(Object.class, new FirstRowBackgroundRenderer());
+    }
+
+    public JTable getBookCopyTable() {
+        return bookCopyTable;
     }
 }
