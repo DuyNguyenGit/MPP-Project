@@ -3,13 +3,10 @@ package librarysystem.windows;
 import controller.ControllerInterface;
 import controller.SystemController;
 import librarysystem.LibWindow;
-import librarysystem.LibrarySystem;
 import utils.Util;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 
 public class AllBookIdsWindow extends JPanel implements LibWindow {
@@ -28,6 +25,7 @@ public class AllBookIdsWindow extends JPanel implements LibWindow {
     //Singleton class
     private AllBookIdsWindow() {
         super(new BorderLayout());
+        init();
     }
 
     public void init() {
@@ -35,10 +33,9 @@ public class AllBookIdsWindow extends JPanel implements LibWindow {
         mainPanel.setLayout(new BorderLayout());
         defineTopPanel();
         defineMiddlePanel();
-        defineLowerPanel();
         mainPanel.add(topPanel, BorderLayout.NORTH);
         mainPanel.add(middlePanel, BorderLayout.CENTER);
-        mainPanel.add(lowerPanel, BorderLayout.SOUTH);
+//        mainPanel.add(lowerPanel, BorderLayout.SOUTH);
         add(mainPanel);
         isInitialized(true);
     }
@@ -61,24 +58,6 @@ public class AllBookIdsWindow extends JPanel implements LibWindow {
 
     }
 
-    public void defineLowerPanel() {
-
-        JButton backToMainButn = new JButton("<= Back to Main");
-        backToMainButn.addActionListener(new BackToMainListener());
-        lowerPanel = new JPanel();
-        lowerPanel.setLayout(new FlowLayout(FlowLayout.LEFT));
-        ;
-        lowerPanel.add(backToMainButn);
-    }
-
-    class BackToMainListener implements ActionListener {
-        @Override
-        public void actionPerformed(ActionEvent evt) {
-            LibrarySystem.hideAllWindows();
-            LibrarySystem.INSTANCE.setVisible(true);
-
-        }
-    }
 
     public void setData(String data) {
         textArea.setText(data);
