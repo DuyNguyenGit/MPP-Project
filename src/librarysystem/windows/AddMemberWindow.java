@@ -1,5 +1,6 @@
 package librarysystem.windows;
 
+import controller.ControllerInterface;
 import controller.SystemController;
 import exception.LibrarySystemException;
 import librarysystem.LibWindow;
@@ -11,7 +12,7 @@ import java.awt.*;
 
 public class AddMemberWindow extends JPanel implements LibWindow {
     public static final AddMemberWindow INSTANCE = new AddMemberWindow();
-    SystemController ci = new SystemController();
+    ControllerInterface ci = new SystemController();
     private boolean isInitialized = false;
 
     private JPanel mainPanel;
@@ -114,7 +115,7 @@ public class AddMemberWindow extends JPanel implements LibWindow {
 
     private void setBounds() {
         firstNameTextField.setBounds(125, 110, 145, 25);
-        firstnameLabel.setBounds(45, 110, 65, 25);
+        firstnameLabel.setBounds(45, 110, 100, 25);
         lastNameField.setBounds(390, 110, 140, 25);
         lastNameLabel.setBounds(315, 110, 100, 25);
         memberIdField.setBounds(125, 165, 145, 25);
@@ -145,7 +146,6 @@ public class AddMemberWindow extends JPanel implements LibWindow {
         zipcodeTextField.setText("");
     }
 
-
     private void addLibraryMemberListener(JButton butn) {
         butn.addActionListener(evt -> {
             try {
@@ -156,10 +156,6 @@ public class AddMemberWindow extends JPanel implements LibWindow {
             } catch (LibrarySystemException e) {
                 JOptionPane.showMessageDialog(AddMemberWindow.this, e.getMessage());
             }
-
-
         });
     }
-
-
 }

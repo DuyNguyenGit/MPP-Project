@@ -137,12 +137,12 @@ public class SystemController implements ControllerInterface {
         return results;
     }
 
+    @Override
     public void addNewLibraryMember(String fname, String lname, String mId, String tel, String street, String city,
                                     String state,
                                     String zip) throws LibrarySystemException {
         LibraryMember libraryMember = dataAccess.searchMember(mId);
         if (libraryMember != null) {
-//        JOptionPane.showMessageDialog(CheckOutBookWindow.INSTANCE, "Member ID NOT found");
             throw new LibrarySystemException("Member already exist");
         }
 

@@ -9,16 +9,19 @@ import java.util.List;
 
 public interface ControllerInterface {
 
-    public void login(String id, String password) throws LoginException;
+    void login(String id, String password) throws LoginException;
 
-    public List<String> allMemberIds();
+    List<String> allMemberIds();
 
-    public List<String> allBookIds();
+    List<String> allBookIds();
 
     List<CheckoutRecord> loadCheckoutRecord();
 
-    public Book addNewBookCopy(String isbn) throws LibrarySystemException;
+    Book addNewBookCopy(String isbn) throws LibrarySystemException;
 
-    public List<CheckoutRecord> checkoutForm(String memberId, String isbn) throws Exception;
+    List<CheckoutRecord> checkoutForm(String memberId, String isbn) throws Exception;
 
+    void addNewLibraryMember(String fname, String lname, String mId, String tel, String street, String city,
+                             String state,
+                             String zip) throws LibrarySystemException;
 }
