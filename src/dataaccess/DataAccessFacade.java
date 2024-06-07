@@ -26,16 +26,26 @@ public class DataAccessFacade implements DataAccess {
             + "/src/dataaccess/storage";
     public static final String DATE_PATTERN = "MM/dd/yyyy";
 
-    public HashMap<String, CheckoutRecord> saveNewCheckoutRecord(CheckoutRecord checkoutRecord) {
-        HashMap<String, CheckoutRecord> checkoutRecordHashMap = readCheckoutRecordMap();
-        if (checkoutRecordHashMap == null) {
-            checkoutRecordHashMap = new HashMap<>();
-        }
-        String memberId = checkoutRecord.getLibraryMember().getMemberId();
-        checkoutRecordHashMap.put(memberId, checkoutRecord);
-        saveToStorage(StorageType.CHECKOUTRECORD, checkoutRecordHashMap);
-        return checkoutRecordHashMap;
-    }
+	// implement: other save operations
+	public void saveNewMember(LibraryMember member) {
+		HashMap<String, LibraryMember> mems = readMemberMap();
+		if (mems != null) {
+			String memberId = member.getMemberId();
+			mems.put(memberId, member);
+			saveToStorage(StorageType.MEMBERS, mems);
+		}
+	}
+
+	public HashMap<String, CheckoutRecord> saveNewCheckoutRecord(CheckoutRecord checkoutRecord, int copyNum) {
+		HashMap<String, CheckoutRecord> checkoutRecordHashMap = readCheckoutRecordMap();
+		if(checkoutRecordHashMap == null){
+			checkoutRecordHashMap = new HashMap<>();
+		}
+		String memberId = checkoutRecord.getLibraryMember().getMemberId() + copyNum;
+		checkoutRecordHashMap.put(memberId, checkoutRecord);
+		saveToStorage(StorageType.CHECKOUTRECORD, checkoutRecordHashMap);
+		return checkoutRecordHashMap;
+	}
 
     @Override
     public void updateBookCopyAvailability(String isbn, BookCopy checkoutBookCopy) {
@@ -70,16 +80,6 @@ public class DataAccessFacade implements DataAccess {
         //Returns a Map with name/value pairs being
         //   isbn -> Book
         return (HashMap<String, Book>) readFromStorage(StorageType.BOOKS);
-    }
-
-    // implement: other save operations
-    public void saveNewMember(LibraryMember member) {
-        HashMap<String, LibraryMember> mems = readMemberMap();
-        if (mems != null) {
-            String memberId = member.getMemberId();
-            mems.put(memberId, member);
-            saveToStorage(StorageType.MEMBERS, mems);
-        }
     }
 
     @Override

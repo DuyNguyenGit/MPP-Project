@@ -2,6 +2,7 @@ package business;
 
 import java.io.Serial;
 import java.io.Serializable;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -11,10 +12,12 @@ public class CheckoutRecord implements Serializable {
     private LibraryMember libraryMember;
     private List<CheckoutRecordEntry> checkoutRecordEntryList = new ArrayList<>();
     private List<Fine> fineList = new ArrayList<>();
+    private LocalDateTime dateTime;
 
-    public CheckoutRecord(LibraryMember libraryMember, CheckoutRecordEntry RecordEntry) {
+    public CheckoutRecord(LibraryMember libraryMember, CheckoutRecordEntry RecordEntry, LocalDateTime dateTime){
         this.libraryMember = libraryMember;
         this.checkoutRecordEntryList.add(RecordEntry);
+        this.dateTime = dateTime;
     }
 
     public void addEntry(CheckoutRecordEntry checkoutRecordEntry) {
@@ -35,5 +38,13 @@ public class CheckoutRecord implements Serializable {
 
     public void setCheckoutRecordEntryList(List<CheckoutRecordEntry> checkoutRecordEntryList) {
         this.checkoutRecordEntryList = checkoutRecordEntryList;
+    }
+
+    public LocalDateTime getDateTime() {
+        return dateTime;
+    }
+
+    public void setDateTime(LocalDateTime dateTime) {
+        this.dateTime = dateTime;
     }
 }

@@ -15,6 +15,8 @@ public interface ControllerInterface {
 
     public List<String> allBookIds();
 
+    List<CheckoutRecord> loadCheckoutRecord();
+
     public Book addNewBookCopy(String isbn) throws LibrarySystemException;
 
     public List<CheckoutRecord> checkoutForm(String memberId, String isbn) throws Exception;

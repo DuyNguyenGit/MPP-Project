@@ -1,6 +1,9 @@
 package librarysystem.table;
 
 import business.CheckoutRecord;
+import controller.SystemController;
+import librarysystem.LibWindow;
+import utils.Util;
 
 import javax.swing.*;
 import javax.swing.table.TableColumn;
@@ -9,39 +12,48 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-public class TableExample extends JFrame {
-    private JPanel topPanel; //panel containing table
-    private JPanel middlePanel;
-    private JTable table;
-    private JScrollPane scrollPane;
-    private CustomTableModel model;
-    private JLabel label;
-    private List<CheckoutRecord> checkoutRecord;
-
-    //table data and config
-    private final String[] DEFAULT_COLUMN_HEADERS
-            = {"Member Id", "First Name", "Last Name", "ISBN", "Title", " Checkout Date", "Due Date"};
-    private static final int FRAME_WIDTH = 800;
-    private static final int FRAME_HEIGHT = 480;
-    private static final int TABLE_WIDTH = (int) (0.75 * FRAME_WIDTH);
+public class TableExample extends JPanel implements LibWindow {
+	public static final TableExample INSTANCE = new TableExample();
+	private JPanel topPanel; //panel containing table
+	private JPanel middlePanel;
+	private JTable table;
+	private JScrollPane scrollPane;
+	private CustomTableModel model;
+	private JLabel label;
+	private static List<CheckoutRecord> checkoutRecord;
+	private SystemController systemController;
+	
+	//table data and config
+	private final String[] DEFAULT_COLUMN_HEADERS 
+	   = {"Member Id", "First Name", "Last Name", "ISBN", "Title", " Checkout Date", "Due Date"};
+	private static final int FRAME_WIDTH = 800;
+	private static final int FRAME_HEIGHT = 480;
+	private static final int TABLE_WIDTH = (int) (0.75 * FRAME_WIDTH);
     private static final int DEFAULT_TABLE_HEIGHT = (int) (0.75 * FRAME_HEIGHT);
 
     //these numbers specify relative widths of the columns -- 
     //they  must add up to 1
-    private final float[] COL_WIDTH_PROPORTIONS =
-            {0.14f, 0.14f, 0.14f, 0.12f, 0.15f, 0.17f, 0.14f};//{.75f, .25f}
-
-    public TableExample(List<CheckoutRecord> checkoutRecord) {
-        initializeWindow();
-        JPanel mainPanel = new JPanel();
-        defineTopPanel();
-        defineMiddlePanel();
-        mainPanel.setLayout(new BorderLayout());
-        mainPanel.add(topPanel, BorderLayout.NORTH);
-        mainPanel.add(middlePanel, BorderLayout.CENTER);
-        getContentPane().add(mainPanel);
-        this.checkoutRecord = checkoutRecord;
-    }
+    private final float [] COL_WIDTH_PROPORTIONS =
+    	{0.14f, 0.14f, 0.14f, 0.12f, 0.15f, 0.17f, 0.14f};//{.75f, .25f}
+    
+	public TableExample() {
+		initializeWindow();
+		JPanel mainPanel = new JPanel();
+		defineTopPanel();
+		defineMiddlePanel();
+		mainPanel.setLayout(new BorderLayout());
+		mainPanel.add(topPanel, BorderLayout.NORTH);
+		mainPanel.add(middlePanel, BorderLayout.CENTER);
+		add(mainPanel);
+		loadCheckoutRecord();
+	}
+	public void loadCheckoutRecord() {
+		systemController = new SystemController();
+		this.checkoutRecord = systemController.loadCheckoutRecord();
+		setTableValues();
+		getTable().updateUI();
+		setVisible(true);
+	}
 
     public JTable getTable() {
         return table;
@@ -51,15 +63,15 @@ public class TableExample extends JFrame {
         return model;
     }
 
-    private void initializeWindow() {
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setTitle("Table Example");
-        centerFrameOnDesktop(this);
-        setSize(FRAME_WIDTH, FRAME_HEIGHT);
-        setResizable(false);
-    }
-
-    public static void centerFrameOnDesktop(Component f) {
+	private void initializeWindow() {
+		JLabel checkoutRecordTitle = new JLabel("Checkout Record");
+		Util.adjustLabelFont(checkoutRecordTitle, Color.BLUE.darker(), true);
+		add(checkoutRecordTitle, BorderLayout.NORTH);
+		centerFrameOnDesktop(this);
+		setSize(FRAME_WIDTH,FRAME_HEIGHT);
+	}
+	
+	public static void centerFrameOnDesktop(Component f) {
         Toolkit toolkit = Toolkit.getDefaultToolkit();
         int height = toolkit.getScreenSize().height;
         int width = toolkit.getScreenSize().width;
@@ -121,32 +133,26 @@ public class TableExample extends JFrame {
 //			table.updateUI();
 //		}
 //	}
-    public void setValues(CustomTableModel model) {
-        List<String[]> data = new ArrayList<>();
-
-
-        //for (int i = this.checkoutRecord.size()-1; i >= 0; i--) {
-        for (CheckoutRecord c : this.checkoutRecord) {
-//			CheckoutRecord c = this.checkoutRecord.get(i);
-            String memberId = c.getLibraryMember().getMemberId();
-            String firstName = c.getLibraryMember().getFirstName();
-            String lastName = c.getLibraryMember().getLastName();
-            String isbn = c.getCheckoutRecordEntryList().get(0).getBookNum().getBook().getIsbn();
-            String title = c.getCheckoutRecordEntryList().get(0).getBookNum().getBook().getTitle();
-            LocalDate checkoutDate = c.getCheckoutRecordEntryList().get(0).getCheckOutDate();
-            LocalDate dueDate = c.getCheckoutRecordEntryList().get(0).getDueDate();
+	public void setTableValues() {
+		List<String[]> data = new ArrayList<>();
+		for (CheckoutRecord c : this.checkoutRecord) {
+			String memberId = c.getLibraryMember().getMemberId();
+			String firstName = c.getLibraryMember().getFirstName();
+			String lastName = c.getLibraryMember().getLastName();
+			String isbn = c.getCheckoutRecordEntryList().get(0).getBookNum().getBook().getIsbn();
+			String title = c.getCheckoutRecordEntryList().get(0).getBookNum().getBook().getTitle();
+			LocalDate checkoutDate = c.getCheckoutRecordEntryList().get(0).getCheckOutDate();
+			LocalDate dueDate = c.getCheckoutRecordEntryList().get(0).getDueDate();
 
             String[] row = {memberId, firstName, lastName, isbn, title, checkoutDate.toString(), dueDate.toString()};
 
-            data.add(row);
-        }
-        for (CheckoutRecord c : this.checkoutRecord) {
+			data.add(row);
+		}
 
-        }
-
-        model.setTableValues(data);
-    }
-
+		model.resetTableValues();
+		model.setTableValues(data);	
+	}
+	
 //	public static void main(String[] args) {
 //		EventQueue.invokeLater(new Runnable()
 //		{
@@ -156,6 +162,21 @@ public class TableExample extends JFrame {
 //			}
 //		});
 //	}
+
+	@Override
+	public void init() {
+
+	}
+
+	@Override
+	public boolean isInitialized() {
+		return false;
+	}
+
+	@Override
+	public void isInitialized(boolean val) {
+
+	}
 
     private static final long serialVersionUID = 3618976789175941431L;
 }
