@@ -19,12 +19,11 @@ public class AppPanel extends JPanel {
 
     private JList sideBarMenuList;
 
-    private JPanel dashboard, addMember, allMemberIds, addBookCopy, allBook, checkOutBook, checkoutRecord, bookCopies;
+    private JPanel dashboard, addMember, allMemberIds, addBookCopy, allBook, checkOutBook, checkoutRecord;
 
     private String[] listMenu = {"Dashboard", "Add Member", "Members", "Add Book Copy", "Books",
-            "CheckOut Book", "CheckOut Record", "Copies"};
-    private String[] listAdminMenu = {"Dashboard", "Add Member", "Add Book", "Add Book Copy", "Members", "Books",
-            "Copies"};
+            "CheckOut Book", "CheckOut Record"};
+    private String[] listAdminMenu = {"Dashboard", "Add Member", "Add Book", "Add Book Copy", "Members", "Books"};
     private String[] listLibrarianMenu = {"Dashboard", "CheckOut Book", "CheckOut Record"};
 
     private AppPanel() {
@@ -98,7 +97,6 @@ public class AppPanel extends JPanel {
         allBook = new JPanel(new CardLayout());
         checkOutBook = CheckoutFormWindow.INSTANCE;
         checkoutRecord = new JPanel(new CardLayout());
-        bookCopies = new JPanel(new CardLayout());
 
         rightSidePanel.add(listMenu[0], dashboard);
         rightSidePanel.add(listMenu[1], addMember);
@@ -107,7 +105,6 @@ public class AppPanel extends JPanel {
         rightSidePanel.add(listMenu[4], allBook);
         rightSidePanel.add(listMenu[5], checkOutBook);
         rightSidePanel.add(listMenu[6], checkoutRecord);
-        rightSidePanel.add(listMenu[7], bookCopies);
     }
 
     public void goToDashBoard() {
