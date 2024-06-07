@@ -1,9 +1,9 @@
 package librarysystem.windows;
 
-import business.ControllerInterface;
-import business.SystemController;
+import controller.ControllerInterface;
+import controller.SystemController;
 import librarysystem.LibWindow;
-import librarysystem.Util;
+import utils.Util;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;

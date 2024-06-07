@@ -21,7 +21,7 @@ public class LoginPanel extends JPanel {
         leftLoginSide = new JPanel(new BorderLayout());
         leftLoginSide.setBackground(Color.WHITE);
         String currDirectory = System.getProperty("user.dir");
-        String pathToImage = currDirectory + "/src/librarysystem/library.jpg";
+        String pathToImage = currDirectory + "/src/resources/library.jpg";
         ImageIcon image = new ImageIcon(pathToImage);
 
         JLabel icon = new JLabel(image);

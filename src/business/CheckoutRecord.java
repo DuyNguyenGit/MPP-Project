@@ -20,9 +20,10 @@ public class CheckoutRecord implements Serializable {
         this.dateTime = dateTime;
     }
 
-    public void addEntry(CheckoutRecordEntry checkoutRecordEntry){
+    public void addEntry(CheckoutRecordEntry checkoutRecordEntry) {
         checkoutRecordEntryList.add(checkoutRecordEntry);
     }
+
     public LibraryMember getLibraryMember() {
         return libraryMember;
     }
