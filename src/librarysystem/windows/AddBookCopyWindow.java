@@ -6,9 +6,9 @@ import controller.ControllerInterface;
 import controller.SystemController;
 import exception.LibrarySystemException;
 import librarysystem.LibWindow;
+import utils.FirstRowBackgroundRenderer;
 
 import javax.swing.*;
-import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 
@@ -21,6 +21,7 @@ public class AddBookCopyWindow extends JPanel implements LibWindow {
     private boolean isInitialized = false;
 
     private JPanel mainPanel;
+    private JLabel isbnLabel;
     private TextField isbnTxtField;
     private JButton addBookCopyBtn;
     private JTable bookCopyTable;
@@ -56,6 +57,10 @@ public class AddBookCopyWindow extends JPanel implements LibWindow {
         mainPanel = new JPanel();
         FlowLayout fl = new FlowLayout(FlowLayout.CENTER, 25, 25);
         mainPanel.setLayout(fl);
+
+        isbnLabel = new JLabel("ISBN");
+        mainPanel.add(isbnLabel);
+
         isbnTxtField = new TextField("", 20);
         mainPanel.add(isbnTxtField);
 
@@ -115,10 +120,6 @@ public class AddBookCopyWindow extends JPanel implements LibWindow {
     }
 
     private void setFirstRowColor() {
-        DefaultTableCellRenderer firstRowRender = new DefaultTableCellRenderer();
-        firstRowRender.setForeground(Color.red);
-        //
+        bookCopyTable.setDefaultRenderer(Object.class, new FirstRowBackgroundRenderer());
     }
-
-
 }
