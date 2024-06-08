@@ -22,6 +22,9 @@ public class SystemController implements ControllerInterface {
     private DataAccess dataAccess = new DataAccessFacade();
 
     public void login(String id, String password) throws LoginException {
+        if(id.isEmpty() || password.isEmpty()) {
+            throw new LoginException("ID or Password must not empty");
+        }
         DataAccess da = new DataAccessFacade();
         HashMap<String, User> map = da.readUserMap();
         if(!map.containsKey(id)) {
