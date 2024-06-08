@@ -22,7 +22,7 @@ public class AddBookCopyWindow extends JPanel implements LibWindow {
 
     private JPanel mainPanel;
     private JLabel isbnLabel;
-    private TextField isbnTxtField;
+    private JTextField isbnTxtField;
     private JButton addBookCopyBtn;
     private JTable bookCopyTable;
 
@@ -61,7 +61,7 @@ public class AddBookCopyWindow extends JPanel implements LibWindow {
         isbnLabel = new JLabel("ISBN");
         mainPanel.add(isbnLabel);
 
-        isbnTxtField = new TextField("", 20);
+        isbnTxtField = new JTextField(20);
         mainPanel.add(isbnTxtField);
 
         addBookCopyBtn = new JButton("Add Book Copy");

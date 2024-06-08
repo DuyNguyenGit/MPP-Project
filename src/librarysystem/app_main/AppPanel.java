@@ -24,7 +24,7 @@ public class AppPanel extends JPanel {
 
     private String[] listMenu = {"Library", "Add Member", "Members", "Add Book Copy", "Books",
             "CheckOut Book", "CheckOut Record"};
-    private String[] listAdminMenu = {"Library", "Add Member", "Add Book", "Add Book Copy", "Members", "Books"};
+    private String[] listAdminMenu = {"Library", "Add Member", "Add Book Copy", "Members", "Books"};
     private String[] listLibrarianMenu = {"Library", "CheckOut Book", "CheckOut Record"};
 
     private AppPanel() {
@@ -66,18 +66,18 @@ public class AppPanel extends JPanel {
         sideBarMenuList.setSelectionBackground(Color.lightGray);
 
         sideBarMenuList.addListSelectionListener(event -> {
-           String sideBarComponent = sideBarMenuList.getSelectedValue().toString();
-           if(sideBarComponent.equals(listMenu[3])) {
-               AddBookCopyWindow.INSTANCE.clearFields();
-               AddBookCopyWindow.INSTANCE.clearTable();
-           }
-            if(sideBarComponent.equals(listMenu[5])) {
+            String sideBarComponent = sideBarMenuList.getSelectedValue().toString();
+            if (sideBarComponent.equals(listMenu[3])) {
+                AddBookCopyWindow.INSTANCE.clearFields();
+                AddBookCopyWindow.INSTANCE.clearTable();
+            }
+            if (sideBarComponent.equals(listMenu[5])) {
                 CheckoutFormWindow.INSTANCE.clearFields();
             }
-            if(sideBarComponent.equals(listMenu[4])) {
+            if (sideBarComponent.equals(listMenu[4])) {
                 AllBookIdsWindow.INSTANCE.reloadBook();
             }
-           ((CardLayout) (rightSidePanel.getLayout())).show(rightSidePanel,
+            ((CardLayout) (rightSidePanel.getLayout())).show(rightSidePanel,
                     sideBarComponent);
         });
 
@@ -122,10 +122,12 @@ public class AppPanel extends JPanel {
     public void goToDashBoard() {
         ((CardLayout) (rightSidePanel.getLayout())).show(rightSidePanel, listMenu[0]);
     }
+
     public void goToCheckoutRecord() {
         ((CardLayout) (rightSidePanel.getLayout())).show(rightSidePanel, listMenu[6]);
         sideBarMenuList.setSelectedIndex(6);
     }
+
     private void initComponents() {
         setRightAppSidePanel();
         setLeftAppSidePanel();
