@@ -2,6 +2,7 @@ package librarysystem;
 
 import librarysystem.app_main.AppPanel;
 import librarysystem.login_screen.LoginPanel;
+import librarysystem.windows.LoginWindow;
 import utils.Util;
 
 import javax.swing.*;
@@ -47,6 +48,7 @@ public class MainLibrarySystem extends JFrame {
 
     public void navigateToLogin() {
         ((CardLayout) (mainPanel.getLayout())).show(mainPanel, listPanel[0]);
+        LoginWindow.INSTANCE.setVisible(true);
     }
 
     public void navigateToApp() {
