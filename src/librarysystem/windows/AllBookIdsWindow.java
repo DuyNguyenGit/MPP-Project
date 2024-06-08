@@ -34,7 +34,7 @@ public class AllBookIdsWindow extends JPanel implements LibWindow {
 
     public void defineTopPanel() {
         topPanel = new JPanel();
-        JLabel AllIDsLabel = new JLabel("All Book IDs");
+        JLabel AllIDsLabel = new JLabel("Library Books");
         Util.adjustLabelFont(AllIDsLabel, Util.DARK_BLUE, true);
         topPanel.setLayout(new FlowLayout(FlowLayout.CENTER));
         topPanel.add(AllIDsLabel);
